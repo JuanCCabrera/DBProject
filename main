@@ -1,10 +1,35 @@
 from flask import Flask, jsonify, request
+from handler.parts import PartHandler
+
+#Use http://localhost:5000/PartsApp/Parts for ALL PARTS
+#Use http://localhost:5000/PartsApp/Suppliers for ALL SUPPLIERS
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return 'Welcome to SikitrakeChat!'
+
+@app.route('/login')
+def login():
+    return "No Login for you!!!"
+
+@app.route('/PartsApp/parts')
+def parts():
+    if request.args:
+        return PartHandler().searchParts(request.args)
+    else:
+        handler = PartHandler()
+        return handler.getAllParts()
+
+@app.route('/PartsApp/parts/<int:pid>')
+def getPartById(pid):
+    return PartHandler().getPartById(pid)
+
+@app.route('/PartsApp/parts/<int:pid>/suppliers')
+def getSuppliersByPartId(pid):
+    return PartHandler().getSuppliersByPartId(pid)
+
 
 if __name__=='__main__':
     app.run()
