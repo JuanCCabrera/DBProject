@@ -16,11 +16,8 @@ def login():
 
 @app.route('/SikitrakeChat/Reactions')
 def reactions():
-    if request.args:
-        return ReactionHandler().searchReactions(request.args)
-    else:
-        handler = ReactionHandler()
-        return handler.getAllReactions()
+    handler = ReactionHandler()
+    return handler.getAllReactions()
 
 @app.route('/SikitrakeChat/Reactions/ID/<int:rid>')
 def getReactionsById(rid):
