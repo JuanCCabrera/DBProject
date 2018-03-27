@@ -1,35 +1,86 @@
 from flask import Flask, jsonify, request
-from handler.parts import PartHandler
-
-#Use http://localhost:5000/PartsApp/Parts for ALL PARTS
-#Use http://localhost:5000/PartsApp/Suppliers for ALL SUPPLIERS
+from handler.reactions import ReactionHandler
+from handler.groupchats import GroupChatHandler
+from handler.Users import UsersHandler
+from handler.Message import MessageHandler
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/SikitrakeChat')
 def home():
     return 'Welcome to SikitrakeChat!'
 
 @app.route('/login')
 def login():
-    return "No Login for you!!!"
+    return "Login Not Currently Available"
 
-@app.route('/PartsApp/parts')
-def parts():
+@app.route('/SikitrakeChat/Reactions')
+def reactions():
     if request.args:
-        return PartHandler().searchParts(request.args)
+        return ReactionHandler().searchReactions(request.args)
     else:
-        handler = PartHandler()
-        return handler.getAllParts()
+        handler = ReactionHandler()
+        return handler.getAllReactions()
 
-@app.route('/PartsApp/parts/<int:pid>')
-def getPartById(pid):
-    return PartHandler().getPartById(pid)
+@app.route('/SikitrakeChat/Reactions/ID/<int:rid>')
+def getReactionsById(rid):
+    return ReactionHandler().getReactionsById(rid)
 
-@app.route('/PartsApp/parts/<int:pid>/suppliers')
-def getSuppliersByPartId(pid):
-    return PartHandler().getSuppliersByPartId(pid)
+@app.route('/SikitrakeChat/Reactions/Likes')
+def getAllLikes():
+    return ReactionHandler().getAllLikes()
 
+@app.route('/SikitrakeChat/Reactions/Dislikes')
+def getAllDislikes():
+    return ReactionHandler().getAllDislikes()
+
+@app.route('/SikitrakeChat/GroupChats')
+def getAllGroupChats():
+    return GroupChatHandler().getAllGroupChats()
+
+@app.route('/SikitrakeChat/GroupChats/name/<string:name>')
+def getGroupChatsByName(name):
+    return GroupChatHandler().getGroupChatsByName(name)
+
+@app.route('/SikitrakeChat/GroupChats/ID/<int:gid>')
+def getGroupChatsById(gid):
+    return GroupChatHandler().getGroupChatsById(gid)
+
+@app.route('/SikitrakeChat/GroupChats/ID/<int:gid>/name')
+def getGroupChatNameById(gid):
+    return GroupChatHandler().getGroupChatNameById(gid)
+
+@app.route('/SikitrakeChat/GroupChats/name/<string:name>/info')
+def getGroupChatInfoByName(name):
+    return GroupChatHandler().getGroupChatInfoByName(name)
+
+@app.route('/SikitrakeChat/Users')
+def getAllUsers():
+    return UsersHandler().getAllUsers()
+
+@app.route('/SikitrakeChat/Users/ID/<int:UID>')
+def getUsersByUId(UID):
+    handler = UsersHandler()
+    return handler.getUsersByUId(UID)
+
+@app.route('/SikitrakeChat/Users/phone/<string:phone>')
+def getUsersByPhone(phone):
+    handler = UsersHandler()
+    return handler.getUsersByPhone(phone)
+
+@app.route('/SikitrakeChat/Users/email/<string:email>')
+def getUsersByEmail(email):
+    handler = UsersHandler()
+    return handler.getUsersByEmail(email)
+
+@app.route('/SikitrakeChat/Messages')
+def getAllMessages():
+    handler = MessageHandler()
+    return handler.getAllMessages()
+
+@app.route('/SikitrakeChat/Messages/ID/<int:mid>')
+def getMessageById(mid):
+    return MessageHandler().getMessageById(mid)
 
 if __name__=='__main__':
     app.run()
