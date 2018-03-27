@@ -3,6 +3,7 @@ from handler.reactions import ReactionHandler
 from handler.groupchats import GroupChatHandler
 from handler.Users import UsersHandler
 from handler.Message import MessageHandler
+from handler.hashtags import HashtagHandler
 
 app = Flask(__name__)
 
@@ -78,6 +79,16 @@ def getAllMessages():
 @app.route('/SikitrakeChat/Messages/ID/<int:mid>')
 def getMessageById(mid):
     return MessageHandler().getMessageById(mid)
+
+@app.route('/SikitrakeChat/Hashtags')
+def getAllHashtags():
+    handler = HashtagHandler()
+    return handler.getAllHashtags()
+
+@app.route('/SikitrakeChat/Hashtags/ID/<int:htid>')
+def getHashtagsById(htid):
+    handler = HashtagHandler()
+    return handler.getHashtagsById(htid)
 
 if __name__=='__main__':
     app.run()
