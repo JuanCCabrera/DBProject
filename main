@@ -71,6 +71,11 @@ def getUsersByEmail(email):
     handler = UsersHandler()
     return handler.getUsersByEmail(email)
 
+@app.route('/SikitrakeChat/Users/contacts/<int:UID>')
+def getContactsByUserID(UID):
+    handler = UsersHandler()
+    return handler.getContactsByUserID(UID)
+
 @app.route('/SikitrakeChat/Messages')
 def getAllMessages():
     handler = MessageHandler()

@@ -8,6 +8,19 @@ class UsersDAO:
         self.data.append(P2)
         self.data.append(P3)
 
+        P4 = [100,'Coraliscamacho1',101,'carlosrodriguez75']
+        P5 = [100,'Coraliscamacho1',102,'juancabrera2']
+        P6 = [101,'carlosrodriguez75',100,'Coraliscamacho1']
+        P7 = [101,'carlosrodriguez75',102,'juancabrera2']
+        P8 = [102,'juancabrera2',100,'Coraliscamacho1']
+        self.cdata = []
+        self.cdata.append(P4)
+        self.cdata.append(P5)
+        self.cdata.append(P6)
+        self.cdata.append(P7)
+        self.cdata.append(P8)
+
+
     def getAllUsers(self):
         return self.data
 
@@ -32,6 +45,16 @@ class UsersDAO:
         result = []
         for r in self.data:
             if email == r[4]:
+                result.append(r)
+        if not result:
+            return None
+        else:
+            return result
+
+    def getContactsByUserID(self,UID):
+        result = []
+        for r in self.cdata:
+            if UID == r[0]:
                 result.append(r)
         if not result:
             return None

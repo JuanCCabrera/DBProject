@@ -14,6 +14,14 @@ class UsersHandler:
         result['UPassword'] = row[6]
         return result
 
+    def mapToDictContactByID(self,row):
+        result = {}
+        result['UID'] = row[0]
+        result['UDispName'] = row[1]
+        result['CID'] = row[2]
+        result['UContactDispName'] = row[3]
+        return result
+
 
     def getAllUsers(self):
         dao = UsersDAO()
@@ -52,4 +60,15 @@ class UsersHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
+
+    def getContactsByUserID(self,UID):
+        dao = UsersDAO()
+        result = dao.getContactsByUserID(UID)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictContactByID(r))
             return jsonify(Users=mapped_result)
