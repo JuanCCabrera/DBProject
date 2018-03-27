@@ -10,6 +10,8 @@ class UsersHandler:
         result['ULast__Name'] = row[2]
         result['UPhone'] = row[3]
         result['UEmail'] = row[4]
+        result['UDispName'] = row[5]
+        result['UPassword'] = row[6]
         return result
 
 

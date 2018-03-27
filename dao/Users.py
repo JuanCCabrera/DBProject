@@ -1,8 +1,8 @@
 class UsersDAO:
     def __init__(self): #Generates hardwired parameters by default on PartDAO initialization
-        P1 = [100, 'Coralis', 'Camacho', '7871234567', 'coralis.camacho1@upr.edu']
-        P2 = [101, 'Carlos', 'Rodriguez', '7872345678', 'carlos.rodriguez75@upr.edu']
-        P3 = [102, 'Juan', 'Cabrera', '7873456789', 'juan.cabrera2@upr.edu']
+        P1 = [100, 'Coralis', 'Camacho', '7871234567', 'coralis.camacho1@upr.edu', 'Coraliscamacho1','872g73g92']
+        P2 = [101, 'Carlos', 'Rodriguez', '7872345678', 'carlos.rodriguez75@upr.edu', 'carlosrodriguez75','298h38gw']
+        P3 = [102, 'Juan', 'Cabrera', '7873456789', 'juan.cabrera2@upr.edu', 'juancabrera2', '982h489g']
         self.data = []
         self.data.append(P1)
         self.data.append(P2)
