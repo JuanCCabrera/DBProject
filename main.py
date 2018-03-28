@@ -85,10 +85,15 @@ def getAllMessages():
 def getMessageById(mid):
     return MessageHandler().getMessageById(mid)
 
-@app.route('/SikitrakeChat/GroupChats/<int:cid>')
+@app.route('/SikitrakeChat/Messages/GroupChats/<int:cid>')
 def getMessagesbyChatID(cid):
     handler = MessageHandler()
     return handler.getMessagesbyChatID(cid)
+
+@app.route('/SikitrakeChat/Messages/GroupChats/<int:cid>/UserId/<int:uid>')
+def getMessagesbyChatIDAndUser(cid, uid):
+    handler = MessageHandler()
+    return handler.getMessagesbyChatIDAndUser(cid, uid)
 
 @app.route('/SikitrakeChat/Hashtags')
 def getAllHashtags():
