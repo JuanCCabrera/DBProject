@@ -1,3 +1,4 @@
+
 from flask import jsonify, request
 from dao.reactions import ReactionDAO
 
@@ -6,6 +7,8 @@ class ReactionHandler:
         result = {}
         result['RID'] = row[0]
         result['MReaction'] = row[1]
+        result['MID'] = row[2]
+        result['ROwner'] = row[3]
         return result
 
     def getAllReactions(self):
@@ -17,7 +20,7 @@ class ReactionHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
-            return jsonify(Reaction=mapped_result)
+            return jsonify(Reactions=mapped_result)
 
     def getReactionsById(self,rid):
         dao = ReactionDAO()
@@ -25,8 +28,10 @@ class ReactionHandler:
         if result == None:
             return jsonify(Error="NOT FOUND"),404
         else:
-            mapped_result = self.mapToDict(result)
-            return jsonify(Reaction=mapped_result)
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Reactions=mapped_result)
 
     def getAllLikes(self):
         dao = ReactionDAO()
@@ -37,7 +42,7 @@ class ReactionHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
-            return jsonify(Reaction=mapped_result)
+            return jsonify(Reactions=mapped_result)
 
     def getAllDislikes(self):
         dao = ReactionDAO()
@@ -48,4 +53,15 @@ class ReactionHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
-            return jsonify(Reaction=mapped_result)
+            return jsonify(Reactions=mapped_result)
+
+    def getAllReactionsbyMessageID(self,mid):
+        dao = ReactionDAO()
+        result = dao.getAllReactionsbyMessageID(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Reactions=mapped_result)

@@ -20,6 +20,18 @@ class UsersDAO:
         self.cdata.append(P7)
         self.cdata.append(P8)
 
+        P9 = [100, 'Coraliscamacho1', 787, 'DB Class']
+        P10 = [100, 'Coraliscamacho1', 563, 'TestChat']
+        P11 = [101, 'carlosrodriguez75', 97, 'SikitrakeChat']
+        P12 = [101, 'carlosrodriguez75', 563, 'TestChat']
+        P13 = [102, 'juancabrera2', 787, 'DB Class']
+        self.pdata = []
+        self.pdata.append(P9)
+        self.pdata.append(P10)
+        self.pdata.append(P11)
+        self.pdata.append(P12)
+        self.pdata.append(P13)
+
 
     def getAllUsers(self):
         return self.data
@@ -55,6 +67,42 @@ class UsersDAO:
         result = []
         for r in self.cdata:
             if UID == r[0]:
+                result.append(r)
+        if not result:
+            return None
+        else:
+            return result
+
+    def getUsersInGroupChatByID(self, gid):
+        result = []
+        for r in self.pdata:
+            if gid == r[2]:
+                temp = []
+                temp.append(r[0])
+                temp.append(r[1])
+                result.append(temp)
+        if not result:
+            return None
+        else:
+            return result
+
+    def getUsersInGroupChatByName(self, gname):
+        result = []
+        for r in self.pdata:
+            if gname == r[3]:
+                temp = []
+                temp.append(r[0])
+                temp.append(r[1])
+                result.append(temp)
+        if not result:
+            return None
+        else:
+            return result
+
+    def getUserByUsername(self,uname):
+        result = []
+        for r in self.data:
+            if uname == r[5]:
                 result.append(r)
         if not result:
             return None

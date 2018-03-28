@@ -33,3 +33,25 @@ class MessageHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Messages=mapped_result)
+
+    def getMessagesbyChatID(self, cid):
+        dao = MessageDAO()
+        result = dao.getMessagesbyChatID(cid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Messages=mapped_result)
+
+    def getMessagesbyChatIDAndUser(self, cid, uid):
+        dao = MessageDAO()
+        result = dao.getMessagesbyChatIDAndUser(cid, uid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Messages=mapped_result)
