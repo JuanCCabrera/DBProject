@@ -52,3 +52,14 @@ class ReactionHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Reaction=mapped_result)
+
+    def getAllReactionsbyMessageID(self,mid):
+        dao = ReactionDAO()
+        result = dao.getAllReactionsbyMessageID(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Messages=mapped_result)

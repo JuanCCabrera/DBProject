@@ -32,6 +32,11 @@ def getAllLikes():
 def getAllDislikes():
     return ReactionHandler().getAllDislikes()
 
+@app.route('/SikitrakeChat/Messages/<int:mid>/Reactions')
+def getAllReactionsbyMessageID(mid):
+    handler = ReactionHandler()
+    return handler.getAllReactionsbyMessageID(mid)
+
 @app.route('/SikitrakeChat/GroupChats')
 def getAllGroupChats():
     return GroupChatHandler().getAllGroupChats()
