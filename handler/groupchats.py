@@ -1,51 +1,96 @@
 from flask import jsonify, request
-from dao.groupchat import ChatDAO
-class GroupChatHandler:
+from dao.groupchats import GroupChatDAO
 
+class GroupChatHandler:
     def mapToDict(self, row):
         result = {}
         result['GID'] = row[0]
-        result['GNAME'] = row[1]
+        result['GName'] = row[1]
+        result['GCDate'] = row[2]
+        result['GOwner'] = row[3]
         return result
-    def mapToSupDict(self, row):
+
+    def mapToDictIdtoName(self,row):
+        result = {}
+        result['GName'] = row
+        return result
+
+    def mapToDictInfoByName(self,row):
         result = {}
         result['GID'] = row[0]
-        result['GNAME'] = row[1]
+        result['GCDATE'] = row[1]
+        result['GOwner'] = row[2]
+        return result
+    def mapToDictInfoByOwner(self,row):
+        result = {}
+        result['GID'] = row[0]
+        result['GName'] = row[1]
+        result['GCDATE'] = row[2]
         return result
 
-    def getAllChats(self):
-        dao = ChatDAO()
-        result = dao.getAllChats()
-        mapped_result = []
-        for r in result:
-            mapped_result.append(self.mapToDict(r))
-        return jsonify(GroupChat=mapped_result)
-
-    def getChatById(self, id):
-        dao = ChatDAO()
-        result = dao.getChatById(id)
+    def getAllGroupChats(self):
+        dao = GroupChatDAO()
+        result = dao.getAllGroupChats()
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
-        else :
-            mapped = self.mapToDict(result)
-            return jsonify(GroupChat=mapped)
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(
+                    self.mapToDict(r))
+            return jsonify(GroupChats=mapped_result)
 
+    def getGroupChatsByName(self,name):
+        dao = GroupChatDAO()
+        result = dao.getGroupChatsByName(name)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(
+                    self.mapToDict(r))
+            return jsonify(GroupChats=mapped_result)
 
-    def getNameByChatId(self, id):
-        dao = ChatDAO()
-        result = dao.getNameByChatId(id)
-        mapped_result = []
-        for r in result:
-            mapped_result.append(self.mapToDict(r))
-        return jsonify(Name=mapped_result)
+    def getGroupChatsById(self,gid):
+        dao = GroupChatDAO()
+        result = dao.getGroupChatsById(gid)
+        if(result == None):
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(GroupChats=mapped_result)
 
-    def searchName(self, args):
-        name = args.get('name')
-        dao = ChatDAO()
-        result = dao.searchByName(name)
-        mapped_result = []
-        for r in result:
-            mapped_result.append(self.mapToDict(r))
-        return jsonify(GroupChat=mapped_result)
+    def getGroupChatNameById(self,gid):
+        dao = GroupChatDAO()
+        result = dao.getGroupChatNameById(gid)
+        if(result == None):
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            mapped_result.append(self.mapToDictIdtoName(result))
+            return jsonify(GroupChats=mapped_result)
 
+    def getGroupChatInfoByName(self,name):
+        dao = GroupChatDAO()
+        result = dao.getGroupChatInfoByName(name)
+        if(result == None):
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictInfoByName(r))
+            return jsonify(GroupChats=mapped_result)
+    def getGroupChatByOwner(self,name):
+        dao = GroupChatDAO()
+        result = dao.getGroupChatByOwner(name)
+        if (result == None):
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictInfoByOwner(r))
+            return jsonify(GroupChatsByOwner=mapped_result)
 
