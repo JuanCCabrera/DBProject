@@ -19,14 +19,26 @@ def home():
 def login():
     return "Login Not Currently Available"
 
-@app.route('/SikitrakeChat/Reactions')
+@app.route('/SikitrakeChat/Reactions',methods = ['GET'])
 def reactions():
-    handler = ReactionHandler()
-    return handler.getAllReactions()
+    if(request.method == 'GET'):
+        handler = ReactionHandler()
+        return handler.getAllReactions()
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
-@app.route('/SikitrakeChat/Reactions/ID/<int:rid>')
+
+@app.route('/SikitrakeChat/Reactions/ID/<int:rid>', methods=['GET', 'DELETE', 'PUT'])
 def getReactionsById(rid):
-    return ReactionHandler().getReactionsById(rid)
+    if request.method == 'GET':
+        return ReactionHandler().getReactionsById(rid)
+    elif request.method == 'PUT':
+        return ReactionHandler().updateReaction(rid,request.form)
+    elif request.method == 'DELETE':
+        return ReactionHandler().deleteReaction(rid)
+    else:
+        return jsonify(Error="Method not allowed."),405
+
 
 @app.route('/SikitrakeChat/Reactions/Likes')
 def getAllLikes():

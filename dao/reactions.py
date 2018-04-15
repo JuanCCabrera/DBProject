@@ -1,3 +1,6 @@
+#from config.dbconfig import pf_config
+#import psycopg2
+
 class ReactionDAO:
     def __init__(self): #Generates hardwired parameters by default on PartDAO initialization
         P1 = [122, 1, 57, 101]
@@ -50,3 +53,25 @@ class ReactionDAO:
             return None
         else:
             return result
+
+    def insert(self, RID, MReaction, MID, ROwner):
+        cursor = self.conn.cursor()
+        query = "insert into Reactions(RID, MReaction, MID, Rowner) values (%s, &s, %s, %s) returning RID;"
+        cursor.execute(query, (RID, MReaction, MID, ROwner,))
+        RID = cursor.fetchone()[0]
+        self.conn.commit()
+        return RID
+
+    def delete(self, rid):
+        cursor = self.conn.cursor()
+        query = "delete from parts where rid = %s;"
+        cursor.execute(query, (rid))
+        self.conn.commit()
+        return rid
+
+    def update(self,RID, MReaction, MID, ROwner):
+        cursor = self.conn.cursor()
+        query = "update parts set RID = %s, MReaction = %s, MID = %s, ROwner = %s;"
+        cursor.execute(query, (RID, MReaction, MID, ROwner,))
+        self.conn.commit()
+        return RID
