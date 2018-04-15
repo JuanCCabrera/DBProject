@@ -22,6 +22,12 @@ class UsersHandler:
         result['UContactDispName'] = row[3]
         return result
 
+    def mapToDictUsersByGroup(self,row):
+        result = {}
+        result['UID'] = row[0]
+        result['UDispName'] = row[1]
+        return result
+
 
     def getAllUsers(self):
         dao = UsersDAO()
@@ -71,4 +77,37 @@ class UsersHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDictContactByID(r))
+            return jsonify(Users=mapped_result)
+
+    def getUsersInGroupChatByID(self,gid):
+        dao = UsersDAO()
+        result = dao.getUsersInGroupChatByID(gid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictUsersByGroup(r))
+            return jsonify(Users=mapped_result)
+
+    def getUsersInGroupChatByName(self,name):
+        dao = UsersDAO()
+        result = dao.getUsersInGroupChatByName(name)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictUsersByGroup(r))
+            return jsonify(Users=mapped_result)
+
+    def getUserByUsername(self,uname):
+        dao = UsersDAO()
+        result = dao.getUserByUsername(uname)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
             return jsonify(Users=mapped_result)

@@ -83,9 +83,10 @@ class GroupChatHandler:
             for r in result:
                 mapped_result.append(self.mapToDictInfoByName(r))
             return jsonify(GroupChats=mapped_result)
-    def getGroupChatByOwner(self,name):
+
+    def getGroupChatByOwner(self, uid):
         dao = GroupChatDAO()
-        result = dao.getGroupChatByOwner(name)
+        result = dao.getGroupChatByOwner(uid)
         if (result == None):
             return jsonify(Error="NOT FOUND"), 404
         else:
@@ -93,4 +94,3 @@ class GroupChatHandler:
             for r in result:
                 mapped_result.append(self.mapToDictInfoByOwner(r))
             return jsonify(GroupChatsByOwner=mapped_result)
-

@@ -1,3 +1,4 @@
+
 from flask import jsonify, request
 from dao.hashtags import HashtagDAO
 
@@ -43,4 +44,4 @@ class HashtagHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
-            return jsonify(Messages=mapped_result)
+            return jsonify(Hashtags=mapped_result)
