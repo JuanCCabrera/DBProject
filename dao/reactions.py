@@ -1,9 +1,10 @@
-#from config.dbconfig import pf_config
+from config.dbconfig import pg_config
 #import psycopg2
+
 
 class ReactionDAO:
     def __init__(self): #Generates hardwired parameters by default on PartDAO initialization
-        connection_irl = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
                                                             pg_config['user'],
                                                             pg_config['password'])
         #self.conn = psycopg2._connect(connection_url)
