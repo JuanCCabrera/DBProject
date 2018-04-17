@@ -21,8 +21,7 @@ class GroupChatHandler:
         result['GCDATE'] = row[1]
         result['GOwner'] = row[2]
         return result
-
-    def mapToDictInfoByOwner(self, row):
+    def mapToDictInfoByOwner(self,row):
         result = {}
         result['GID'] = row[0]
         result['GName'] = row[1]
@@ -83,15 +82,15 @@ class GroupChatHandler:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDictInfoByName(r))
-                return jsonify(GroupChats=mapped_result)
+            return jsonify(GroupChats=mapped_result)
 
-        def getGroupChatByOwner(self, uid):
-            dao = GroupChatDAO()
-            result = dao.getGroupChatByOwner(uid)
-            if (result == None):
-                return jsonify(Error="NOT FOUND"), 404
-            else:
-                mapped_result = []
-                for r in result:
-                    mapped_result.append(self.mapToDictInfoByOwner(r))
-                return jsonify(GroupChatsByOwner=mapped_result)
+    def getGroupChatByOwner(self, uid):
+        dao = GroupChatDAO()
+        result = dao.getGroupChatByOwner(uid)
+        if (result == None):
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictInfoByOwner(r))
+            return jsonify(GroupChatsByOwner=mapped_result)
