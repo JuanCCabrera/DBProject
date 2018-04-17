@@ -20,7 +20,7 @@ class ReactionDAO:
 
     def getAllReactions(self):
         cursor = self.conn.cursor()
-        query = "Select * From Reactions;"
+        query = "Select * From Reaction;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -32,7 +32,7 @@ class ReactionDAO:
 
     def getReactionsById(self,rid):
         cursor = self.conn.cursor()
-        query = "Select * From Messages Where RID = %s;"
+        query = "Select * From Reaction Where RID = %s;"
         cursor.execute(query, (rid,))
         result = []
         for row in cursor:
@@ -50,7 +50,7 @@ class ReactionDAO:
 
     def getAllLikes(self):
         cursor = self.conn.cursor()
-        query = "Select * From Reactions Where MReaction = True;"
+        query = "Select * From Reaction Where MReaction = True;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -68,7 +68,7 @@ class ReactionDAO:
 
     def getAllDislikes(self):
         cursor = self.conn.cursor()
-        query = "Select * From Reactions Where MReaction = False;"
+        query = "Select * From Reaction Where MReaction = False;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -86,7 +86,7 @@ class ReactionDAO:
 
     def getAllReactionsbyMessageID(self,mid):
         cursor = self.conn.cursor()
-        query = "Select * From Reactions natural inner join Message Where MID = %s;"
+        query = "Select * From Reaction natural inner join Message Where MID = %s;"
         cursor.execute(query, (mid,))
         result = []
         for row in cursor:
