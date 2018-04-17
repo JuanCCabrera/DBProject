@@ -68,3 +68,21 @@ class HashtagDAO:
         #     return None
         # else:
         #     return result
+
+    def getMessagesByHashtags(self,hashtags):
+        cursor = self.conn.cursor()
+        query = "Select * From Hashtags Where HText = %s;" #verificar si corre bien
+        cursor.execute(query, (hashtags,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+        ##Primera Parte##
+        # result = []
+        # for r in self.data:
+        #     if mid == r[1]:
+        #         result.append(r)
+        # if not result:
+        #     return None
+        # else:
+        #     return result

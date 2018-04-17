@@ -50,3 +50,25 @@ class ReactionDAO:
             return None
         else:
             return result
+
+    def getLikesByMessageID(self, mid):
+        result = []
+        for r in self.data:
+            if mid == r[2]:
+                if r[1] == 1:
+                    result.append(r)
+        if not result:
+            return None
+        else:
+            return result
+
+    def getDisLikesByMessageID(self, mid):
+        result = []
+        for r in self.data:
+            if mid == r[2]:
+                if r[1] == 0:
+                    result.append(r)
+        if not result:
+            return None
+        else:
+            return result

@@ -64,3 +64,25 @@ class ReactionHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Reactions=mapped_result)
+
+    def getLikesByMessageID(self,mid):
+        dao = ReactionDAO()
+        result = dao.getLikesByMessageID(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Reactions=mapped_result)
+
+    def getDisLikesByMessageID(self,mid):
+        dao = ReactionDAO()
+        result = dao.getDisLikesByMessageID(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Reactions=mapped_result)
