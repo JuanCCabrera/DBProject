@@ -9,8 +9,6 @@ class MessageHandler:
         result['Message'] = row[1]
         result['MDate'] = row[2]
         result['MHashtag'] = row[3]
-        result['GroupChatID'] = row[4]
-        result['Owner'] = row[5]
         return result
 
 

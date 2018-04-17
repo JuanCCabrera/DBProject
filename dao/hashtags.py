@@ -8,7 +8,7 @@ class HashtagDAO:
                                                             pg_config['password'])
 
        # self.conn = psycopg2._connect(connection_url)
-    
+
         ##Primera Parte##
         # P1 = [87, 'helloWorld', 56]
         # P2 = [88, 'Thefirst', 56]
