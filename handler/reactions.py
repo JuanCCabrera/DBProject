@@ -66,53 +66,54 @@ class ReactionHandler:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Reactions=mapped_result)
 
-    def build_reaction_attributes(self, RID, MReaction, MID, ROwner):
-        result = {}
-        result['RID'] = RID
-        result['MReaction'] = MReaction
-        result['MID'] = MID
-        result['ROwner'] = ROwner
-        return result
+    # def build_reaction_attributes(self, RID, MReaction, MID, ROwner):
+    #     result = {}
+    #     result['RID'] = RID
+    #     result['MReaction'] = MReaction
+    #     result['MID'] = MID
+    #     result['ROwner'] = ROwner
+    #     return result
 
-    def deleteReaction(self, rid):
-        dao = ReactionDAO()
-        if not dao.getReactionsById(rid):
-            return jsonify(Error = "Reaction not found."), 404
-        else:
-            dao.delete(rid)
-            return jsonify(DeleteStatus = "OK"), 200
+    #Fase3
+    # def deleteReaction(self, rid):
+    #     dao = ReactionDAO()
+    #     if not dao.getReactionsById(rid):
+    #         return jsonify(Error = "Reaction not found."), 404
+    #     else:
+    #         dao.delete(rid)
+    #         return jsonify(DeleteStatus = "OK"), 200
 
-    def insertReaction(self,form):
-        if len(form) != 4:
-            return jsonify(Error = "Malformed post request"), 400
-        else:
-            RID = form['RID']
-            MReaction = form['MReaction']
-            MID = form['MID']
-            ROwner = form['ROwner']
-            if RID and MReaction and MID and ROwner:
-                dao = ReactionDAO()
-                dao.insert(RID, MReaction, MID, ROwner)
-                result = self.build_reaction_attributes(RID, MReaction, MID, ROwner)
-                return jsonify(Reaction=result),201
-            else:
-                return jsonify(Error="Unexpected attributes in post request"), 400
-
-    def updateReaction(self,rid,form):
-        dao = ReactionDAO()
-        if not dao.getReactionsById(rid):
-            return jsonify(Error="Malformed update request"), 400
-        else:
-            if len(form) != 4:
-                return jsonify(Error="Malformed update request"),400
-            else:
-                RID = form['RID']
-                MReaction = form['MReaction']
-                MID = form['MID']
-                ROwner = form['ROwner']
-                if RID and MReaction and MID and ROwner:
-                    dao.update(RID,MReaction,MID,ROwner)
-                    result = self.build_reaction_attributes(RID,MReaction,MID,ROwner)
-                    return jsonify(Reaction=result),200
-                else:
-                    return jsonify(Error="Unexpected attributes in update request"), 400
+    # def insertReaction(self,form):
+    #     if len(form) != 4:
+    #         return jsonify(Error = "Malformed post request"), 400
+    #     else:
+    #         RID = form['RID']
+    #         MReaction = form['MReaction']
+    #         MID = form['MID']
+    #         ROwner = form['ROwner']
+    #         if RID and MReaction and MID and ROwner:
+    #             dao = ReactionDAO()
+    #             dao.insert(RID, MReaction, MID, ROwner)
+    #             result = self.build_reaction_attributes(RID, MReaction, MID, ROwner)
+    #             return jsonify(Reaction=result),201
+    #         else:
+    #             return jsonify(Error="Unexpected attributes in post request"), 400
+    #
+    # def updateReaction(self,rid,form):
+    #     dao = ReactionDAO()
+    #     if not dao.getReactionsById(rid):
+    #         return jsonify(Error="Malformed update request"), 400
+    #     else:
+    #         if len(form) != 4:
+    #             return jsonify(Error="Malformed update request"),400
+    #         else:
+    #             RID = form['RID']
+    #             MReaction = form['MReaction']
+    #             MID = form['MID']
+    #             ROwner = form['ROwner']
+    #             if RID and MReaction and MID and ROwner:
+    #                 dao.update(RID,MReaction,MID,ROwner)
+    #                 result = self.build_reaction_attributes(RID,MReaction,MID,ROwner)
+    #                 return jsonify(Reaction=result),200
+    #             else:
+    #                 return jsonify(Error="Unexpected attributes in update request"), 400
