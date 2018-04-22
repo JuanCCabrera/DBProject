@@ -90,9 +90,29 @@ def getAllMessages():
     return handler.getAllMessages()
 
 @app.route('/SikitrakeChat/Messages/ID/<int:mid>/Reactions')
-def getAllReactionsbyMessageID(mid):
+def getAllReactionsByMessageID(mid):
     handler = ReactionHandler()
     return handler.getAllReactionsbyMessageID(mid)
+
+@app.route('/SikitrakeChat/Message/ID/<int:mid>/Likes')
+def getAllLikesByMessageID(mid):
+    handler = ReactionHandler()
+    return handler.getAllLikesByMessageID(mid)
+
+@app.route('/SikitrakeChat/Message/ID/<int:mid>/Dislikes')
+def getAllDislikesByMessageID(mid):
+    handler = ReactionHandler()
+    return handler.getAllDislikesByMessageID(mid)
+
+@app.route('/SikitrakeChat/Message/ID/<int:mid>/Likes/Amount')
+def getNumberOfLikesByMessageID(mid):
+    handler = ReactionHandler()
+    return handler.getNumberOfLikesByMessageID(mid)
+
+@app.route('/SikitrakeChat/Message/ID/<int:mid>/Dislikes/Amount')
+def getNumberOfDislikesByMessageID(mid):
+    handler = ReactionHandler()
+    return handler.getNumberOfDislikesByMessageID(mid)
 
 @app.route('/SikitrakeChat/Messages/ID/<int:mid>')
 def getMessageById(mid):
@@ -137,6 +157,28 @@ def getUserByUsername(uname):
 def getUsersInGroupChatByName(name):
     handler = UsersHandler()
     return handler.getUsersInGroupChatByName(name)
+
+@app.route('/SikitrakeChat/Users/Liked/Message/<int:mid>')
+def getUsersThatLikedMessage(mid):
+    handler = UsersHandler()
+    return handler.getUsersThatLikedMessage(mid)
+
+@app.route('/SikitrakeChat/Users/Disliked/Message/<int:mid>')
+def getUsersThatDislikedMessage(mid):
+    handler = UsersHandler()
+    return handler.getUsersThatDislikedMessage(mid)
+
+@app.route('/SikitrakeChat/GroupChats/Name/<string:gname>/owner')  #TODO
+def getGroupChatOwnerByName(gname):
+    handler = UsersHandler()
+    return handler.getGroupChatOwnerByName(gname)
+
+@app.route('/SikitrakeChat/GroupChats/ID/<int:gid>/owner')  #TODO
+def getGroupChatOwnerByID(gid):
+    handler = UsersHandler()
+    return handler.getGroupChatOwnerByID(gid)
+
+
 
 if __name__=='__main__':
     app.run()
