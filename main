@@ -168,12 +168,12 @@ def getUsersThatDislikedMessage(mid):
     handler = UsersHandler()
     return handler.getUsersThatDislikedMessage(mid)
 
-@app.route('/SikitrakeChat/GroupChats/Name/<string:gname>/owner')  #TODO
+@app.route('/SikitrakeChat/GroupChats/Name/<string:gname>/owner')
 def getGroupChatOwnerByName(gname):
     handler = UsersHandler()
     return handler.getGroupChatOwnerByName(gname)
 
-@app.route('/SikitrakeChat/GroupChats/ID/<int:gid>/owner')  #TODO
+@app.route('/SikitrakeChat/GroupChats/ID/<int:gid>/owner')
 def getGroupChatOwnerByID(gid):
     handler = UsersHandler()
     return handler.getGroupChatOwnerByID(gid)
