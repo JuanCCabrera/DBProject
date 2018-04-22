@@ -133,3 +133,25 @@ class UsersHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Users=mapped_result)
+
+    def getGroupChatOwnerByName(self,gname):
+        dao = UsersDAO()
+        result = dao.getGroupChatOwnerByName(gname)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
+
+    def getGroupChatOwnerByID(self,gid):
+        dao = UsersDAO()
+        result = dao.getGroupChatOwnerByID(gid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)

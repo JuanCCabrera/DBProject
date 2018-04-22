@@ -95,3 +95,22 @@ class UsersDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getGroupChatOwnerByName(self,gname):
+        cursor = self.conn.cursor()
+        query = "Select uid, udispname, upassword, ufirst_name, ulast_name, uphone, uemail From Users natural inner join GroupChats where gname = %s;"  # verificar si corre bien
+        cursor.execute(query, (gname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getGroupChatOwnerByID(self,gid):
+        cursor = self.conn.cursor()
+        query = "Select uid, udispname, upassword, ufirst_name, ulast_name, uphone, uemail From Users natural inner join GroupChats where gid = %s;"  # verificar si corre bien
+        cursor.execute(query, (gid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
