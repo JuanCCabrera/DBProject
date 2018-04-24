@@ -29,7 +29,7 @@ class GroupChatDAO:
 
     def getGroupChatsById(self,gid):
         cursor = self.conn.cursor()
-        query = "Select * from groupchats wehre gid = %s;"  # verificar si corre bien
+        query = "Select * from groupchats where gid = %s;"  # verificar si corre bien
         cursor.execute(query,(gid,))
         result = []
         for row in cursor:

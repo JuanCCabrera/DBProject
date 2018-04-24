@@ -1,3 +1,7 @@
+from config.dbconfig import pg_config
+import psycopg2
+
+
 class UsersDAO:
     def __init__(self): #Generates hardwired parameters by default on PartDAO initialization
         connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
@@ -44,7 +48,7 @@ class UsersDAO:
 
     def getContactsByUserID(self,UID):
         cursor = self.conn.cursor()
-        query = "Select U1.uid, U1.udispname, U2.uid, U2.udispname From (Users as U1 natural inner join Contacts as C) inner join Users as U2 on U2.uid = C.cuid where uid = %s;"  # verificar si corre bien
+        query = "Select U1.uid, U1.udispname, U2.uid, U2.udispname From (Users as U1 natural inner join Contacts as C) inner join Users as U2 on U2.uid = C.cuid where U1.uid = %s;"  # verificar si corre bien
         cursor.execute(query,(UID,))
         result = []
         for row in cursor:
@@ -62,7 +66,7 @@ class UsersDAO:
 
     def getUsersInGroupChatByName(self, gname):
         cursor = self.conn.cursor()
-        query = "Select uid, udispname From (Users natural inner join Participates) natural inner join Groupchats where gname = %s;"  # verificar si corre bien
+        query = "Select U.uid, udispname From (Users as U natural inner join Participates as P as P) inner join GroupChats as G using(gid) where gname = %s;"  # verificar si corre bien
         cursor.execute(query,(gname,))
         result = []
         for row in cursor:

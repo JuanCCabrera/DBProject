@@ -43,8 +43,10 @@ class UsersHandler:
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:
-            mapped = self.mapToDict(result)
-            return jsonify(Users=mapped)
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
 
     def getUsersByPhone(self,phone):
         dao = UsersDAO()

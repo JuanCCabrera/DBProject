@@ -4,14 +4,11 @@ from handler.groupchats import GroupChatHandler
 from handler.Users import UsersHandler
 from handler.Message import MessageHandler
 from handler.hashtags import HashtagHandler
-from pyfiglet import Figlet
 
 app = Flask(__name__)
 
 @app.route('/SikitrakeChat')
 def home():
-    f = Figlet(font='slant')
-    print(f.renderText('SikitrakeChat'))
     return ('Welcome to SikitrakeChat!')
 
 
@@ -94,22 +91,22 @@ def getAllReactionsByMessageID(mid):
     handler = ReactionHandler()
     return handler.getAllReactionsbyMessageID(mid)
 
-@app.route('/SikitrakeChat/Message/ID/<int:mid>/Likes')
+@app.route('/SikitrakeChat/Messages/ID/<int:mid>/Likes')
 def getAllLikesByMessageID(mid):
     handler = ReactionHandler()
     return handler.getAllLikesByMessageID(mid)
 
-@app.route('/SikitrakeChat/Message/ID/<int:mid>/Dislikes')
+@app.route('/SikitrakeChat/Messages/ID/<int:mid>/Dislikes')
 def getAllDislikesByMessageID(mid):
     handler = ReactionHandler()
     return handler.getAllDislikesByMessageID(mid)
 
-@app.route('/SikitrakeChat/Message/ID/<int:mid>/Likes/Amount')
+@app.route('/SikitrakeChat/Messages/ID/<int:mid>/Likes/Amount')
 def getNumberOfLikesByMessageID(mid):
     handler = ReactionHandler()
     return handler.getNumberOfLikesByMessageID(mid)
 
-@app.route('/SikitrakeChat/Message/ID/<int:mid>/Dislikes/Amount')
+@app.route('/SikitrakeChat/Messages/ID/<int:mid>/Dislikes/Amount')
 def getNumberOfDislikesByMessageID(mid):
     handler = ReactionHandler()
     return handler.getNumberOfDislikesByMessageID(mid)
@@ -158,12 +155,12 @@ def getUsersInGroupChatByName(name):
     handler = UsersHandler()
     return handler.getUsersInGroupChatByName(name)
 
-@app.route('/SikitrakeChat/Users/Liked/Message/<int:mid>')
+@app.route('/SikitrakeChat/Users/Liked/Messages/<int:mid>')
 def getUsersThatLikedMessage(mid):
     handler = UsersHandler()
     return handler.getUsersThatLikedMessage(mid)
 
-@app.route('/SikitrakeChat/Users/Disliked/Message/<int:mid>')
+@app.route('/SikitrakeChat/Users/Disliked/Messages/<int:mid>')
 def getUsersThatDislikedMessage(mid):
     handler = UsersHandler()
     return handler.getUsersThatDislikedMessage(mid)
