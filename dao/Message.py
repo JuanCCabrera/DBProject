@@ -29,9 +29,10 @@ class MessageDAO:
 
     def getMessagesbyChatID(self,cid):
         cursor = self.conn.cursor()
-        query = "select mid, message, udispname " \
+        query = "select mid, message, udispname, mdate " \
                 "from messages natural inner join users " \
-                "where gid=1; " #falta hacer el query
+                "where gid=1 " \
+                "order by mid desc; " #falta hacer el query
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:

@@ -19,6 +19,7 @@ class MessageHandler:
         result['id'] = row[0]
         result['text'] = row[1]
         result['author'] = row[2]
+        result['date'] = row[3]
         if not likes:
             result['like'] = 0
         else:
