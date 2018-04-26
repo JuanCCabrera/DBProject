@@ -55,3 +55,14 @@ class MessageHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Messages=mapped_result)
+
+    def getMessagesByHashtags(self, hashtag):
+        dao = MessageDAO()
+        result = dao.getMessagesByHashtags(hashtag)
+        if result == None:
+            return jsonify(Error="NOT FOUND"),404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+        return jsonify(Messages = mapped_result)

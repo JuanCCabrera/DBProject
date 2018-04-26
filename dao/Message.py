@@ -44,3 +44,14 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getMessagesByHashtags(self, hashtag):
+        cursor = self.conn.cursor()
+        query = "select mid, message, mdate, mhashtag " \
+                "from messages natural inner join hashashtags natural inner join hashtags " \
+                "where htext = %s;"
+        cursor.execute(query, (hashtag))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

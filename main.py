@@ -31,12 +31,12 @@ def getAllLikes():
 #Happy Hour 1
 @app.route('/SikitrakeChat/Message/<int:mid>/Reactions/Likes')
 def getLikesByMessageID(mid):
-    return ReactionHandler().getLikesByMessageID()
+    return ReactionHandler().getAllLikesByMessageID(mid)
 
 #Happy Hour 1
 @app.route('/SikitrakeChat/Message/<int:mid>/Reactions/DisLikes')
 def getDisLikesByMessageID(mid):
-    return ReactionHandler().getDisLikesByMessageID()
+    return ReactionHandler().getAllDislikesByMessageID(mid)
 
 @app.route('/SikitrakeChat/Reactions/Dislikes')
 def getAllDislikes():
@@ -128,7 +128,7 @@ def getHashtagsByMessageId(mid):
 #Happy Hour 1
 @app.route('/SikitrakeChat/Hashtags/<string:hashtags>/Messages')
 def getMessagesByHashtags(hashtags):
-    handler = HashtagHandler()
+    handler = MessageHandler()
     return handler.getMessagesByHashtags(hashtags)
 
 if __name__=='__main__':
