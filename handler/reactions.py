@@ -1,3 +1,4 @@
+
 from flask import jsonify, request
 from dao.reactions import ReactionDAO
 
@@ -6,8 +7,13 @@ class ReactionHandler:
         result = {}
         result['RID'] = row[0]
         result['MReaction'] = row[1]
-        result['MID'] = row[2]
-        result['ROwner'] = row[3]
+        result['UID'] = row[2]
+        result['MID'] = row[3]
+        return result
+
+    def mapToDictNumberOfLikesOrDislikes(self,row):
+        result = {}
+        result['Total'] = row[0]
         return result
 
     def getAllReactions(self):
@@ -65,24 +71,46 @@ class ReactionHandler:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Reactions=mapped_result)
 
-    def getLikesByMessageID(self,mid):
+    def getAllLikesByMessageID(self,mid):
         dao = ReactionDAO()
-        result = dao.getLikesByMessageID(mid)
+        result = dao.getAllLikesByMessageID(mid)
         if result == None:
-            return jsonify(Error="NOT FOUND"),404
+            return jsonify(Error="NOT FOUND"), 404
         else:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Reactions=mapped_result)
 
-    def getDisLikesByMessageID(self,mid):
+    def getAllDislikesByMessageID(self,mid):
         dao = ReactionDAO()
-        result = dao.getDisLikesByMessageID(mid)
+        result = dao.getAllDislikesByMessageID(mid)
         if result == None:
-            return jsonify(Error="NOT FOUND"),404
+            return jsonify(Error="NOT FOUND"), 404
         else:
             mapped_result = []
             for r in result:
                 mapped_result.append(self.mapToDict(r))
+            return jsonify(Reactions=mapped_result)
+
+    def getNumberOfLikesByMessageID(self,mid):
+        dao = ReactionDAO()
+        result = dao.getNumberOfLikesByMessageID(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictNumberOfLikesOrDislikes(r))
+            return jsonify(Reactions=mapped_result)
+
+    def getNumberOfDislikesByMessageID(self,mid):
+        dao = ReactionDAO()
+        result = dao.getNumberOfDislikesByMessageID(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDictNumberOfLikesOrDislikes(r))
             return jsonify(Reactions=mapped_result)

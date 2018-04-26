@@ -1,7 +1,7 @@
 #Database  configuration information
 
 pg_config = {
-    'user' : '', #Add user
+    'user' : 'juan', #Add user
     'password' : '', #Add password
-    'dbname' : '' #Add Databasename
+    'dbname' : 'sikidb' #Add Databasename
 }

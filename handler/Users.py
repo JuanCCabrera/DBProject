@@ -6,12 +6,12 @@ class UsersHandler:
     def mapToDict(self,row):
         result = {}
         result['UID'] = row[0]
-        result['UFirst_Name'] = row[1]
-        result['ULast__Name'] = row[2]
-        result['UPhone'] = row[3]
-        result['UEmail'] = row[4]
-        result['UDispName'] = row[5]
-        result['UPassword'] = row[6]
+        result['UDispName'] = row[1]
+        result['UPassword'] = row[2]
+        result['UFirst_Name'] = row[3]
+        result['ULast_Name'] = row[4]
+        result['UPhone'] = row[5]
+        result['UEmail'] = row[6]
         return result
 
     def mapToDictContactByID(self,row):
@@ -43,8 +43,10 @@ class UsersHandler:
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:
-            mapped = self.mapToDict(result)
-            return jsonify(Users=mapped)
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
 
     def getUsersByPhone(self,phone):
         dao = UsersDAO()
@@ -104,6 +106,50 @@ class UsersHandler:
     def getUserByUsername(self,uname):
         dao = UsersDAO()
         result = dao.getUserByUsername(uname)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
+
+    def getUsersThatLikedMessage(self,mid):
+        dao = UsersDAO()
+        result = dao.getUsersThatLikedMessage(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
+
+    def getUsersThatDislikedMessage(self,mid):
+        dao = UsersDAO()
+        result = dao.getUsersThatDislikedMessage(mid)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
+
+    def getGroupChatOwnerByName(self,gname):
+        dao = UsersDAO()
+        result = dao.getGroupChatOwnerByName(gname)
+        if result == None:
+            return jsonify(Error="NOT FOUND"), 404
+        else:
+            mapped_result = []
+            for r in result:
+                mapped_result.append(self.mapToDict(r))
+            return jsonify(Users=mapped_result)
+
+    def getGroupChatOwnerByID(self,gid):
+        dao = UsersDAO()
+        result = dao.getGroupChatOwnerByID(gid)
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:

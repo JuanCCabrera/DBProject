@@ -94,3 +94,4 @@ class GroupChatHandler:
             for r in result:
                 mapped_result.append(self.mapToDictInfoByOwner(r))
             return jsonify(GroupChatsByOwner=mapped_result)
+

@@ -6,7 +6,6 @@ class HashtagHandler:
         result = {}
         result['HTID'] = row[0]
         result['HText'] = row[1]
-        result['MessageID'] = row[2]
         return result
 
 
@@ -37,17 +36,6 @@ class HashtagHandler:
     def getHashtagsByMessageId(self,mid):
         dao = HashtagDAO()
         result = dao.getHashtagsByMessageId(mid)
-        if result == None:
-            return jsonify(Error="NOT FOUND"),404
-        else:
-            mapped_result = []
-            for r in result:
-                mapped_result.append(self.mapToDict(r))
-            return jsonify(Hashtags=mapped_result)
-
-    def getMessagesByHashtags(self,hashtags):
-        dao = HashtagDAO()
-        result = dao.getMessagesByHashtags(hashtags)
         if result == None:
             return jsonify(Error="NOT FOUND"),404
         else:
