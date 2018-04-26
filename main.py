@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from handler.reactions import ReactionHandler
 from handler.groupchats import GroupChatHandler
 from handler.Users import UsersHandler
@@ -6,6 +7,7 @@ from handler.Message import MessageHandler
 from handler.hashtags import HashtagHandler
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/SikitrakeChat')
 def home():

@@ -29,7 +29,9 @@ class MessageDAO:
 
     def getMessagesbyChatID(self,cid):
         cursor = self.conn.cursor()
-        query = "Select * From Messages Where GID = %s;" #falta hacer el query
+        query = "select mid, message, udispname " \
+                "from messages natural inner join users " \
+                "where gid=1; " #falta hacer el query
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:
@@ -51,6 +53,30 @@ class MessageDAO:
                 "from messages natural inner join hashashtags natural inner join hashtags " \
                 "where htext = %s;"
         cursor.execute(query, (hashtag))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getLikesperMessage(self,mid):
+        cursor = self.conn.cursor()
+        query = "select count(*), m.mid " \
+                "from messages as m, reactions as r " \
+                "where m.mid = r.mid and mreaction = true and m.mid = %s " \
+                "group by m.mid; " #verificar si corre bien
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getDislikesperMessage(self, mid):
+        cursor = self.conn.cursor()
+        query = "select count(*), m.mid " \
+                "from messages as m, reactions as r " \
+                "where m.mid = r.mid and mreaction = false and m.mid = %s " \
+                "group by m.mid; " #verificar si corre bien
+        cursor.execute(query, (mid,))
         result = []
         for row in cursor:
             result.append(row)

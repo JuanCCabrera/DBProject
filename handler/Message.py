@@ -11,6 +11,25 @@ class MessageHandler:
         result['MHashtag'] = row[3]
         return result
 
+    def mapToDict_1(self,row):
+        dao = MessageDAO()
+        likes = dao.getLikesperMessage(row[0])
+        dislikes = dao.getDislikesperMessage(row[0])
+        result = {}
+        result['id'] = row[0]
+        result['text'] = row[1]
+        result['author'] = row[2]
+        if not likes:
+            result['like'] = 0
+        else:
+            for r in likes:
+                result['like'] = r[0]
+        if not dislikes:
+            result['nolike'] = '0'
+        else:
+            for r in dislikes:
+                result['nolike'] = r[0]
+        return result
 
     def getAllMessages(self):
         dao = MessageDAO()
@@ -42,7 +61,7 @@ class MessageHandler:
         else:
             mapped_result = []
             for r in result:
-                mapped_result.append(self.mapToDict(r))
+                mapped_result.append(self.mapToDict_1(r))
             return jsonify(Messages=mapped_result)
 
     def getMessagesbyChatIDAndUser(self, cid, uid):
