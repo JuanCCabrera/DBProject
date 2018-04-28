@@ -90,12 +90,3 @@ class ReactionDAO:
         for row in cursor:
             result.append(row)
         return result
-
-    def getLikesandDislikesByMessageID(self,mid):
-        cursor = self.conn.cursor()
-        query = "Select * from (Select mid, count(*) from Reactions where mid = %s AND MReaction = TRUE group by mid) as A inner join (Select mid, count(*) from Reactions where mid = %s and MReaction = FALSE group by mid) as B using(mid);"  # verificar si corre bien
-        cursor.execute(query, (mid,mid))
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
