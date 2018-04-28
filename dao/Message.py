@@ -68,3 +68,12 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getAllMessagesWithAuthor(self):
+        cursor = self.conn.cursor()
+        query = "Select mid, message, udispname, mdate from Messages inner join Users using(uid);"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

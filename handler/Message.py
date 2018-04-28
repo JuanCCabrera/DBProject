@@ -23,13 +23,12 @@ class MessageHandler:
         if not likes:
             result['like'] = 0
         else:
-            for r in likes:
-                result['like'] = r[0]
+            result['like'] = likes[0][0]
+
         if not dislikes:
-            result['nolike'] = '0'
+            result['nolike'] = 0
         else:
-            for r in dislikes:
-                result['nolike'] = r[0]
+            result['nolike'] = dislikes[0][0]
         return result
 
     def getAllMessages(self):
@@ -78,7 +77,7 @@ class MessageHandler:
 
     def getMessagesWithLikesAndDislikes(self):
         dao = MessageDAO()
-        result = dao.getAllMessages()
+        result = dao.getAllMessagesWithAuthor()
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:

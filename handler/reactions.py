@@ -11,6 +11,19 @@ class ReactionHandler:
         result['MID'] = row[3]
         return result
 
+    def mapToDictVariant(self, row):
+        result = {}
+        result['RID'] = row[0]
+        reaction = ""
+        if row[1] == True:
+            result['MReaction'] = "Liked"
+        else:
+            result['MReaction'] = "Disliked"
+        result['UID'] = row[2]
+        result['MID'] = row[3]
+        result['Name'] = row[4]
+        return result
+
     def mapToDictNumberOfLikesOrDislikes(self,row):
         result = {}
         result['Total'] = row[0]
@@ -75,7 +88,7 @@ class ReactionHandler:
         else:
             mapped_result = []
             for r in result:
-                mapped_result.append(self.mapToDict(r))
+                mapped_result.append(self.mapToDictVariant(r))
             return jsonify(Reactions=mapped_result)
 
     def getAllLikesByMessageID(self,mid):

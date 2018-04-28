@@ -48,7 +48,7 @@ class ReactionDAO:
 
     def getAllReactionsbyMessageID(self,mid):
         cursor = self.conn.cursor()
-        query = "Select * from Reactions where mid = %s;"  # verificar si corre bien
+        query = "Select rid, mreaction, uid, mid, udispname from Reactions inner join Users using(uid) where mid = %s order by mreaction desc;"  # verificar si corre bien
         cursor.execute(query,(mid,))
         result = []
         for row in cursor:
@@ -90,3 +90,4 @@ class ReactionDAO:
         for row in cursor:
             result.append(row)
         return result
+
