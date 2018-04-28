@@ -4,8 +4,11 @@ from handler.groupchats import GroupChatHandler
 from handler.Users import UsersHandler
 from handler.Message import MessageHandler
 from handler.hashtags import HashtagHandler
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+
+CORS(app)
 
 @app.route('/SikitrakeChat')
 def home():
@@ -175,6 +178,10 @@ def getGroupChatOwnerByID(gid):
     handler = UsersHandler()
     return handler.getGroupChatOwnerByID(gid)
 
+@app.route('/SikitrakeChat/Messages/LikesAndDislikes')
+def getMessagesWithLikesAndDislikes():
+    handler = MessageHandler()
+    return handler.getMessagesWithLikesAndDislikes()
 
 
 if __name__=='__main__':

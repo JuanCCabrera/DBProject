@@ -44,3 +44,27 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getLikesperMessage(self,mid):
+        cursor = self.conn.cursor()
+        query = "select count(*), m.mid " \
+                "from messages as m, reactions as r " \
+                "where m.mid = r.mid and mreaction = true and m.mid = %s " \
+                "group by m.mid; "
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getDislikesperMessage(self, mid):
+        cursor = self.conn.cursor()
+        query = "select count(*), m.mid " \
+                "from messages as m, reactions as r " \
+                "where m.mid = r.mid and mreaction = false and m.mid = %s " \
+                "group by m.mid; "
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
