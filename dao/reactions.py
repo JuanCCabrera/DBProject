@@ -1,52 +1,93 @@
+from config.dbconfig import pg_config
+import psycopg2
+
+
 class ReactionDAO:
     def __init__(self): #Generates hardwired parameters by default on PartDAO initialization
-        P1 = [122, 1, 57, 101]
-        P2 = [74, 1, 57, 100]
-        P3 = [849, 0, 58, 102]
-        self.data = []
-        self.data.append(P1)
-        self.data.append(P2)
-        self.data.append(P3)
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['password'])
+
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllReactions(self):
-        return self.data
+        cursor = self.conn.cursor()
+        query = "Select * From Reactions;"  # verificar si corre bien
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getReactionsById(self,rid):
+        cursor = self.conn.cursor()
+        query = "Select * From Reactions where rid = %s;"  # verificar si corre bien
+        cursor.execute(query, (rid,))
         result = []
-        for r in self.data:
-            if rid == r[0]:
-                result.append(r)
-        if not result:
-            return None
-        else:
-            return result
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getAllLikes(self):
+        cursor = self.conn.cursor()
+        query = "Select * From Reactions where MReaction = TRUE;"  # verificar si corre bien
+        cursor.execute(query)
         result = []
-        for r in self.data:
-            if 1 == r[1]:
-                result.append(r)
-        if not result:
-            return None
-        else:
-            return result
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getAllDislikes(self):
+        cursor = self.conn.cursor()
+        query = "Select * From Reactions where MReaction = FALSE;"  # verificar si corre bien
+        cursor.execute(query)
         result = []
-        for r in self.data:
-            if 0 == r[1]:
-                result.append(r)
-        if not result:
-            return None
-        else:
-            return result
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getAllReactionsbyMessageID(self,mid):
+        cursor = self.conn.cursor()
+        query = "Select rid, mreaction, uid, mid, udispname from Reactions inner join Users using(uid) where mid = %s order by mreaction desc;"  # verificar si corre bien
+        cursor.execute(query,(mid,))
         result = []
-        for r in self.data:
-            if mid == r[2]:
-                result.append(r)
-        if not result:
-            return None
-        else:
-            return result
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllLikesByMessageID(self,mid):
+        cursor = self.conn.cursor()
+        query = "Select * from Reactions where mid = %s AND mreaction = TRUE;"  # verificar si corre bien
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllDislikesByMessageID(self,mid):
+        cursor = self.conn.cursor()
+        query = "Select * from Reactions where mid = %s AND mreaction = FALSE;"  # verificar si corre bien
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getNumberOfLikesByMessageID(self,mid):
+        cursor = self.conn.cursor()
+        query = "Select count(*) from Reactions where mid = %s AND mreaction = TRUE;"  # verificar si corre bien
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getNumberOfDislikesByMessageID(self,mid):
+        cursor = self.conn.cursor()
+        query = "Select count(*) from Reactions where mid = %s AND mreaction = FALSE;"  # verificar si corre bien
+        cursor.execute(query, (mid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+

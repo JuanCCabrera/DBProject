@@ -6,7 +6,6 @@ class HashtagHandler:
         result = {}
         result['HTID'] = row[0]
         result['HText'] = row[1]
-        result['MessageID'] = row[2]
         return result
 
 
