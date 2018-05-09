@@ -81,11 +81,14 @@ class MessageDAO:
     #Phase III
     def insertMessageinChatGroup(self, Message, MDate, MHashtag, UID, GID):
         cursor = self.conn.cursor()
+        print ('Estoy en el insert')
         query = "insert into messages (message, mdate, mhashtag, uid, gid) " \
                 "values (%s,%s,%s,%s,%s) " \
                 "returning mid; "
-        cursor.execute(query, (Message, MDate, MHashtag, UID, GID, ))
+        cursor.execute(query, (Message, MDate, MHashtag, int(UID), int(GID), ))
         result = cursor.fetchone()[0]
+        self.conn.commit()
+        print ('Result : ', result)
         return result
 
     def getMessagesWithLikesAndDislikesByChatGroup(self, GID):
@@ -102,9 +105,9 @@ class MessageDAO:
 
     def getAllMessagesByHashtag(self, HID):
         cursor = self.conn.cursor()
-        query = "Select mid, message, mdate, uid " \
+        query = "Select mid, message, mdate, uid, htid, htext " \
                 "from messages natural inner join hashashtags natural inner join hashtags " \
-                "where hid = %s;"
+                "where htid = %s;"
         cursor.execute(query, (HID, ))
         result = []
         for row in cursor:

@@ -58,9 +58,9 @@ class GroupChatDAO:
     # Phase III
     def getGroupChatByOwner(self,uid):
         cursor = self.conn.cursor()
-        query = "Select gid, gname, gcdate " \
-                "From groupchats " \
-                "where uid = %s;"
+        query = "select p.gid as gid, gname, gcdate, g.uid " \
+                "from Participates as p, groupchats as g " \
+                "where p.gid = g.gid and p.uid = %s; "
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
@@ -69,11 +69,12 @@ class GroupChatDAO:
 
     def insertNewChatGroup(self, GName, GCDate, UID):
         cursor = self.conn.cursor()
-        query = "insert into reactions (GName, GCDate, UID) " \
+        query = "insert into groupchats (gname, gcdate, uid) " \
                 "values (%s,%s,%s) " \
                 "returning gid; "
         cursor.execute(query, (GName, GCDate, UID, ))
         result = cursor.fetchone()[0]
+        self.conn.commit()
         return result
 
 

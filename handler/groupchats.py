@@ -110,7 +110,7 @@ class GroupChatHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             GName = form['GName']
-            GCDate = form['GCName']
+            GCDate = form['GCDate']
             UID = form['UID']
             if GName and GCDate and UID :
                 row = dao.insertNewChatGroup(GName, GCDate, UID)

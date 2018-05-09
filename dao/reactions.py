@@ -99,14 +99,25 @@ class ReactionDAO:
                 "returning rid; "
         cursor.execute(query, (MReaction, UID, MID, ))
         result = cursor.fetchone()[0]
+        self.conn.commit()
         return result
 
     def updateReactioninMessage(self, MReaction, UID, MID):
         cursor = self.conn.cursor()
         query = "update reactions " \
                 "set mreaction = %s, uid = %s, mid = %s " \
-                "where UID = %s and MID = %s " \
-                "returning rid; "
+                "where UID = %s and MID = %s ; "
         cursor.execute(query, (MReaction, UID, MID, UID, MID ))
-        result = cursor.fetchone()[0]
+        result = 'Sucess'
+        self.conn.commit()
+        return result
+
+    def validateReaction(self, UID, MID):
+        cursor = self.conn.cursor()
+        query = "select * " \
+                "from reactions " \
+                "where uid = %s and mid = %s; "  # verificar si corre bien
+        cursor.execute(query, (UID, MID, ))
+        result = cursor.fetchone()
+        print ('result : ', result)
         return result

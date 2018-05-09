@@ -151,18 +151,22 @@ class ReactionHandler:
         if len(form) != 2:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            MReaction = True
             UID = form['UID']
             MID = form['MID']
-            if MReaction and UID and MID :
-                row = dao.insertReactioninMessage(MReaction, UID, MID)
-                if row == None:
-                    return jsonify(Error="Invalid Insert"), 404
+            validate = dao.validateReaction(UID, MID)
+            if validate == None:
+                MReaction = True
+                if UID and MID :
+                    row = dao.insertReactioninMessage(MReaction, UID, MID)
+                    if row == None:
+                        return jsonify(Error="Invalid Insert"), 404
+                    else:
+                        result = self.ReactioninMessage_dict(MReaction, UID, MID)
+                        return jsonify(Like=result)
                 else:
-                    result = self.ReactioninMessage_dict(MReaction, UID, MID)
-                    return jsonify(User=result)
+                    return jsonify(Error="Unexpected attributes in insert request"), 400
             else:
-                return jsonify(Error="Unexpected attributes in insert request"), 400
+                return self.updateLikeinMessage(form)
 
     def updateLikeinMessage(self, form):
         dao = ReactionDAO()
@@ -172,13 +176,13 @@ class ReactionHandler:
             MReaction = True
             UID = form['UID']
             MID = form['MID']
-            if MReaction and UID and MID :
+            if UID and MID :
                 row = dao.updateReactioninMessage(MReaction, UID, MID)
                 if row == None:
                     return jsonify(Error="Invalid Update"), 404
                 else:
                     result = self.ReactioninMessage_dict(MReaction, UID, MID)
-                    return jsonify(User=result)
+                    return jsonify(Like=result)
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
 
@@ -187,18 +191,22 @@ class ReactionHandler:
         if len(form) != 2:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            MReaction = False
             UID = form['UID']
             MID = form['MID']
-            if MReaction and UID and MID :
-                row = dao.insertReactioninMessage(MReaction, UID, MID)
-                if row == None:
-                    return jsonify(Error="Invalid Insert"), 404
+            validate = dao.validateReaction(UID, MID)
+            if validate == None:
+                MReaction = False
+                if UID and MID :
+                    row = dao.insertReactioninMessage(MReaction, UID, MID)
+                    if row == None:
+                        return jsonify(Error="Invalid Insert"), 404
+                    else:
+                        result = self.ReactioninMessage_dict(MReaction, UID, MID)
+                        return jsonify(Dislike=result)
                 else:
-                    result = self.ReactioninMessage_dict(MReaction, UID, MID)
-                    return jsonify(User=result)
+                    return jsonify(Error="Unexpected attributes in insert request"), 400
             else:
-                return jsonify(Error="Unexpected attributes in insert request"), 400
+                return self.updateDislikeinMessage(form)
 
     def updateDislikeinMessage(self, form):
         dao = ReactionDAO()
@@ -208,12 +216,12 @@ class ReactionHandler:
             MReaction = False
             UID = form['UID']
             MID = form['MID']
-            if MReaction and UID and MID :
+            if UID and MID :
                 row = dao.updateReactioninMessage(MReaction, UID, MID)
                 if row == None:
                     return jsonify(Error="Invalid Update"), 404
                 else:
                     result = self.ReactioninMessage_dict(MReaction, UID, MID)
-                    return jsonify(User=result)
+                    return jsonify(Dislike=result)
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

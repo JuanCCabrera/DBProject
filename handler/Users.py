@@ -192,6 +192,9 @@ class UsersHandler:
             UEmail = form['UEmail']
             if UDispName and UPassword and UFirst_name and UFirst_name \
                 and ULast_name and UPhone and UEmail:
+                validate = dao.validateUDispName(UDispName)
+                if validate != None:
+                    return jsonify(Error="User Exist"), 404
                 row = dao.insertUser(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail)
                 if row == None:
                     return jsonify(Error="Query Fail"), 404

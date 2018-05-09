@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.Message import MessageDAO
 
+
 class MessageHandler:
 
     def mapToDict(self,row):
@@ -45,6 +46,8 @@ class MessageHandler:
         result['Message'] = row[1]
         result['MDate'] = row[2]
         result['UID'] = row[3]
+        result['HTID'] = row[4]
+        result['HText'] = row[5]
         return result
 
     def getAllMessages(self):
@@ -109,15 +112,21 @@ class MessageHandler:
             return jsonify(Error="Malformed insert request"), 400
         else:
             Message = form['Message']
+            print('Message : ', Message)
             MDate = form['MDate']
+            print('MDate : ', MDate)
             MHashtag = False # tengo que hacer la rutina para verificar si tiene hashtag o no un mensaje
+            print('MHashtag : ', MHashtag)
             UID = form['UID']
+            print('UID : ', UID)
             GID = form['GID']
+            print ('GID : ', GID )
             if Message and MDate and UID and GID :
-                row = dao.insertMessageinChatGroup(Message, MDate, MHashtag, UID, GID)
+                row = dao.insertMessageinChatGroup(Message, MDate, MHashtag, int(UID), int(GID))
                 if row == None:
-                    return jsonify(Error="Invalid Login"), 404
+                    return jsonify(Error="Invalid Insert"), 404
                 else:
+                    self.contains_hashtags(Message, row)
                     result = self.insert_MessageinChatGroup_dict(Message, MDate, MHashtag, UID, GID)
                     return jsonify(User=result)
             else:
@@ -146,3 +155,13 @@ class MessageHandler:
             for r in result:
                 mapped_result.append(self.messagebyhashtag_dict(r))
             return jsonify(Messages=mapped_result)
+
+    def contains_hashtags(self, message, mid):
+        message = 'Hola esto es una #prueba para probar que guardo los' \
+                  'hashtags #real'
+        string = message.split(' ')
+        Hashtags = []
+        for word in string:
+            if word.startswith('#'):
+                Hashtags.append(word)
+        print ('Hashtags : ', Hashtags)
