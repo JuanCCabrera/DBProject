@@ -77,3 +77,36 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    #Phase III
+    def insertMessageinChatGroup(self, Message, MDate, MHashtag, UID, GID):
+        cursor = self.conn.cursor()
+        query = "insert into messages (message, mdate, mhashtag, uid, gid) " \
+                "values (%s,%s,%s,%s,%s) " \
+                "returning mid; "
+        cursor.execute(query, (Message, MDate, MHashtag, UID, GID, ))
+        result = cursor.fetchone()[0]
+        return result
+
+    def getMessagesWithLikesAndDislikesByChatGroup(self, GID):
+        cursor = self.conn.cursor()
+        query = "Select mid, message, udispname, mdate " \
+                "from Messages inner join Users using(uid) " \
+                "where gid = %s " \
+                "order by mid desc; "
+        cursor.execute(query, (GID, ))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllMessagesByHashtag(self, HID):
+        cursor = self.conn.cursor()
+        query = "Select mid, message, mdate, uid " \
+                "from messages natural inner join hashashtags natural inner join hashtags " \
+                "where hid = %s;"
+        cursor.execute(query, (HID, ))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

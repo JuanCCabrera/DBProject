@@ -28,6 +28,16 @@ class UsersHandler:
         result['UDispName'] = row[1]
         return result
 
+    def insert_user_dict(self, UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail):
+        result = {}
+        result['UDispName'] = UDispName
+        result['UPassword'] = UPassword
+        result['UFirst_name'] = UFirst_name
+        result['ULast_name'] = ULast_name
+        result['UPhone'] = UPhone
+        result['UEmail'] = UEmail
+        return result
+
 
     def getAllUsers(self):
         dao = UsersDAO()
@@ -157,3 +167,36 @@ class UsersHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Users=mapped_result)
+
+    # Phase III #
+    def login(self, form):
+        dao = UsersDAO()
+        UDispName = form['UDispName']
+        UPassword = form['UPassword']
+        result = dao.login(UDispName, UPassword)
+        if result == None:
+            return jsonify(Error="Invalid Login"), 404
+        else:
+            return jsonify(Login="Success")
+
+    def insertUser(self, form):
+        dao = UsersDAO()
+        if len(form) != 6:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            UDispName = form['UDispName']
+            UPassword = form['UPassword']
+            UFirst_name = form['UFirst_name']
+            ULast_name = form['ULast_name']
+            UPhone = form['UPhone']
+            UEmail = form['UEmail']
+            if UDispName and UPassword and UFirst_name and UFirst_name \
+                and ULast_name and UPhone and UEmail:
+                row = dao.insertUser(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail)
+                if row == None:
+                    return jsonify(Error="Query Fail"), 404
+                else:
+                    result = self.insert_user_dict(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail)
+                    return jsonify(User=result)
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400

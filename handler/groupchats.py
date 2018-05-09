@@ -28,6 +28,13 @@ class GroupChatHandler:
         result['GCDATE'] = row[2]
         return result
 
+    def insert_NewChatGroup_dict(self, GName, GCDate, UID):
+        result = {}
+        result['GName'] = GName
+        result['GCDATE'] = GCDate
+        result['UID'] = UID
+        return result
+
     def getAllGroupChats(self):
         dao = GroupChatDAO()
         result = dao.getAllGroupChats()
@@ -84,7 +91,9 @@ class GroupChatHandler:
                 mapped_result.append(self.mapToDictInfoByName(r))
             return jsonify(GroupChats=mapped_result)
 
-    def getGroupChatByOwner(self, uid):
+    #Phase III
+    def getGroupChatByOwner(self, form):
+        uid = form['UID']
         dao = GroupChatDAO()
         result = dao.getGroupChatByOwner(uid)
         if (result == None):
@@ -94,4 +103,24 @@ class GroupChatHandler:
             for r in result:
                 mapped_result.append(self.mapToDictInfoByOwner(r))
             return jsonify(GroupChatsByOwner=mapped_result)
+
+    def insertNewChatGroup(self, form):
+        dao = GroupChatDAO()
+        if len(form) != 3:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            GName = form['GName']
+            GCDate = form['GCName']
+            UID = form['UID']
+            if GName and GCDate and UID :
+                row = dao.insertNewChatGroup(GName, GCDate, UID)
+                if row == None:
+                    return jsonify(Error="Invalid Insert"), 404
+                else:
+                    result = self.insert_NewChatGroup_dict(GName, GCDate, UID)
+                    return jsonify(User=result)
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400
+
+
 

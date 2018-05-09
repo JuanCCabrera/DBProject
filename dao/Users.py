@@ -118,3 +118,22 @@ class UsersDAO:
             result.append(row)
         return result
 
+    # Phase III #
+    def login(self, UDispName, UPassword):
+        cursor = self.conn.cursor()
+        query = "select udispname, upassword " \
+                "from users " \
+                "where udispname = %s and upassword = %s; "  # verificar si corre bien
+        cursor.execute(query, (UDispName, UPassword, ))
+        result = cursor
+        return result
+
+    def insertUser(self, UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail):
+        cursor = self.conn.cursor()
+        query = "insert into users (udispname, upassword, ufirst_name, ulast_name " \
+                "uphone, uemail) " \
+                "values (%s,%s,%s,%s,%s,%s) " \
+                "returning uid; "
+        cursor.execute(query, (UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail, ))
+        result = cursor.fetchone()[0]
+        return result

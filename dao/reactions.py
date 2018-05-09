@@ -91,3 +91,22 @@ class ReactionDAO:
             result.append(row)
         return result
 
+    #Phase III
+    def insertReactioninMessage(self, MReaction, UID, MID):
+        cursor = self.conn.cursor()
+        query = "insert into reactions (mreaction, uid, mid) " \
+                "values (%s,%s,%s) " \
+                "returning rid; "
+        cursor.execute(query, (MReaction, UID, MID, ))
+        result = cursor.fetchone()[0]
+        return result
+
+    def updateReactioninMessage(self, MReaction, UID, MID):
+        cursor = self.conn.cursor()
+        query = "update reactions " \
+                "set mreaction = %s, uid = %s, mid = %s " \
+                "where UID = %s and MID = %s " \
+                "returning rid; "
+        cursor.execute(query, (MReaction, UID, MID, UID, MID ))
+        result = cursor.fetchone()[0]
+        return result

@@ -54,13 +54,28 @@ class GroupChatDAO:
             result.append(row)
         return result
 
+
+    # Phase III
     def getGroupChatByOwner(self,uid):
         cursor = self.conn.cursor()
-        query = "Select gid, gname, gcdate From groupchats where uid = %s;"  # verificar si corre bien
+        query = "Select gid, gname, gcdate " \
+                "From groupchats " \
+                "where uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
             result.append(row)
         return result
+
+    def insertNewChatGroup(self, GName, GCDate, UID):
+        cursor = self.conn.cursor()
+        query = "insert into reactions (GName, GCDate, UID) " \
+                "values (%s,%s,%s) " \
+                "returning gid; "
+        cursor.execute(query, (GName, GCDate, UID, ))
+        result = cursor.fetchone()[0]
+        return result
+
+
 
 
