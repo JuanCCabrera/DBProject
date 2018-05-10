@@ -1,5 +1,6 @@
 from flask import jsonify, request
 from dao.groupchats import GroupChatDAO
+import datetime
 
 class GroupChatHandler:
     def mapToDict(self, row):
@@ -106,11 +107,11 @@ class GroupChatHandler:
 
     def insertNewChatGroup(self, form):
         dao = GroupChatDAO()
-        if len(form) != 3:
+        if len(form) != 2:
             return jsonify(Error="Malformed insert request"), 400
         else:
             GName = form['GName']
-            GCDate = form['GCDate']
+            GCDate = datetime.datetime.today().strftime('%d-%m-%Y')
             UID = form['UID']
             if GName and GCDate and UID :
                 row = dao.insertNewChatGroup(GName, GCDate, UID)

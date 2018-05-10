@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from dao.Message import MessageDAO
-
+from dao.hashtags import HashtagDAO
+import datetime
 
 class MessageHandler:
 
@@ -31,13 +32,14 @@ class MessageHandler:
             result['nolike'] = dislikes[0][0]
         return result
 
-    def insert_MessageinChatGroup_dict(Self, Message, MDate, MHashtag, UID, GID):
+    def insert_MessageinChatGroup_dict(Self, Message, MDate, MHashtag, UID, GID, MID):
         result = {}
         result['Message'] = Message
         result['MDate'] = MDate
         result['MHashtag'] = MHashtag
         result['UID'] = UID
         result['GID'] = GID
+        result['MID'] = MID
         return result
 
     def messagebyhashtag_dict(self,row):
@@ -108,27 +110,29 @@ class MessageHandler:
     # Phase III #
     def insertMessageinChatGroup(self, form):
         dao = MessageDAO()
-        if len(form) != 4:
+        hdao = HashtagDAO()
+        if len(form) != 3:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            Message = form['Message']
-            print('Message : ', Message)
-            MDate = form['MDate']
-            print('MDate : ', MDate)
-            MHashtag = False # tengo que hacer la rutina para verificar si tiene hashtag o no un mensaje
-            print('MHashtag : ', MHashtag)
+            #Message = form['Message']
+            #Para probar:
+            Message = "Esto es una prueba #funciona #thebest"
+            Hashtags = self.contains_hashtags(Message)
+            MDate = datetime.datetime.today().strftime('%d-%m-%Y')
             UID = form['UID']
-            print('UID : ', UID)
             GID = form['GID']
-            print ('GID : ', GID )
+            MHashtag = False
+            if len(Hashtags) !=0:
+                MHashtag = True
             if Message and MDate and UID and GID :
                 row = dao.insertMessageinChatGroup(Message, MDate, MHashtag, int(UID), int(GID))
                 if row == None:
                     return jsonify(Error="Invalid Insert"), 404
                 else:
-                    self.contains_hashtags(Message, row)
-                    result = self.insert_MessageinChatGroup_dict(Message, MDate, MHashtag, UID, GID)
-                    return jsonify(User=result)
+                    for htext in Hashtags:
+                        hdao.insertHashtag(htext, row)
+                    result = self.insert_MessageinChatGroup_dict(Message, MDate, MHashtag, UID, GID, row)
+                    return jsonify(Message=result)
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
 
@@ -156,12 +160,10 @@ class MessageHandler:
                 mapped_result.append(self.messagebyhashtag_dict(r))
             return jsonify(Messages=mapped_result)
 
-    def contains_hashtags(self, message, mid):
-        message = 'Hola esto es una #prueba para probar que guardo los' \
-                  'hashtags #real'
+    def contains_hashtags(self, message):
         string = message.split(' ')
         Hashtags = []
         for word in string:
             if word.startswith('#'):
                 Hashtags.append(word)
-        print ('Hashtags : ', Hashtags)
+        return Hashtags

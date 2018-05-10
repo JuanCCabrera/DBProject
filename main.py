@@ -198,7 +198,7 @@ def Login():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#The ability to logout a user
+#The ability to logout a user (no esta en los requerimientos)
 # Creo que no se necesita hacer logout como tal
 # bastaria con enviar al usuario a la pg de login y ya
 """@app.route('/SikitrakeChat/Logout')
