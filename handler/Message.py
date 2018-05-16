@@ -114,9 +114,9 @@ class MessageHandler:
         if len(form) != 3:
             return jsonify(Error="Malformed insert request"), 400
         else:
-            #Message = form['Message']
+            Message = form['Message']
             #Para probar:
-            Message = "Esto es una prueba #funciona #thebest"
+            #Message = "Esto es una prueba #funciona #thebest"
             Hashtags = self.contains_hashtags(Message)
             MDate = datetime.datetime.today().strftime('%d-%m-%Y')
             UID = form['UID']
