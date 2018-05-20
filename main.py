@@ -279,6 +279,7 @@ def getAllMessagesByHashtag():
 #The ability to post a reply to a message
 @app.route('/SikitrakeChat/GroupChat/Messages/Reply', methods = ['POST'])
 def insertReplyMessage():
+    print ('Estoy en el get')
     if request.method == 'POST':
         handler = MessageHandler()
         return handler.insertReplyMessage(request.args)

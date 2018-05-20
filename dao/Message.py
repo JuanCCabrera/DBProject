@@ -113,3 +113,12 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insertReplyMessage(self, Or_msg_ID, r_msg_id):
+        cursor = self.conn.cursor()
+        print ('Estoy en el insert')
+        query = "insert into isreply (or_msg_id, r_msg_id) " \
+                "values (%s,%s); "
+        cursor.execute(query, (Or_msg_ID, r_msg_id, ))
+        self.conn.commit()
+        return
