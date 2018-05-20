@@ -251,7 +251,7 @@ def manageDislikeMessage():
 def getAllChatGroupsByUser():
     if request.method == 'GET':
         handler = GroupChatHandler()
-        return handler.getGroupChatByOwner(request.args)
+        return handler.getGroupChatByUserID(request.args)
     if request.method == 'POST' :
         handler = GroupChatHandler()
         return handler.insertNewChatGroup(request.args)

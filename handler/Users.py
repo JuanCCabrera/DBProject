@@ -28,7 +28,7 @@ class UsersHandler:
         result['UDispName'] = row[1]
         return result
 
-    def insert_user_dict(self, UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail):
+    def insert_user_dict(self, UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail, uid):
         result = {}
         result['UDispName'] = UDispName
         result['UPassword'] = UPassword
@@ -36,6 +36,7 @@ class UsersHandler:
         result['ULast_name'] = ULast_name
         result['UPhone'] = UPhone
         result['UEmail'] = UEmail
+        result['UID'] = uid
         return result
 
 
@@ -199,7 +200,7 @@ class UsersHandler:
                 if row == None:
                     return jsonify(Error="Query Fail"), 404
                 else:
-                    result = self.insert_user_dict(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail)
+                    result = self.insert_user_dict(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail, row)
                     return jsonify(User=result)
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

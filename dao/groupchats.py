@@ -56,10 +56,10 @@ class GroupChatDAO:
 
 
     # Phase III
-    def getGroupChatByOwner(self,uid):
+    def getGroupChatByUserID(self,uid):
         cursor = self.conn.cursor()
-        query = "select p.gid as gid, gname, gcdate, g.uid " \
-                "from Participates as p, groupchats as g " \
+        query = "select p.uid, p.gid, g.gname " \
+                "from participates as p, groupchats as g " \
                 "where p.gid = g.gid and p.uid = %s; "
         cursor.execute(query, (uid,))
         result = []

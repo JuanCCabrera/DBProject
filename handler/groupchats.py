@@ -24,9 +24,9 @@ class GroupChatHandler:
         return result
     def mapToDictInfoByOwner(self,row):
         result = {}
-        result['GID'] = row[0]
-        result['GName'] = row[1]
-        result['GCDATE'] = row[2]
+        result['UID'] = row[0]
+        result['GID'] = row[1]
+        result['GName'] = row[2]
         return result
 
     def insert_NewChatGroup_dict(self, GName, GCDate, UID):
@@ -93,10 +93,10 @@ class GroupChatHandler:
             return jsonify(GroupChats=mapped_result)
 
     #Phase III
-    def getGroupChatByOwner(self, form):
+    def getGroupChatByUserID(self, form):
         uid = form['UID']
         dao = GroupChatDAO()
-        result = dao.getGroupChatByOwner(uid)
+        result = dao.getGroupChatByUserID(uid)
         if (result == None):
             return jsonify(Error="NOT FOUND"), 404
         else:
