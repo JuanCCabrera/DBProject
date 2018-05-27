@@ -87,4 +87,13 @@ class GroupChatDAO:
         self.conn.commit()
         return result
 
+    def validateContact(self, UID, CUID):
+        cursor = self.conn.cursor()
+        query = "select uid " \
+                "from contacts " \
+                "where uid = %s and cuid = %s; "
+        cursor.execute(query, (UID, CUID, ))
+        result = cursor.fetchone()
+        return result
+
 

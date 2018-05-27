@@ -136,8 +136,12 @@ class GroupChatHandler:
         else:
             GID = form['GID']
             UID = form['UID']
+            CUID = form['CUID']
             if GID and UID :
-                row = dao.insertParticipant(GID, UID)
+                validate = dao.validateContact(UID, CUID)
+                if (validate == None):
+                    return jsonify(Error="Not a Contact"), 404
+                row = dao.insertParticipant(GID, CUID)
                 if row == None:
                     return jsonify(Error="Invalid Insert"), 404
                 else:
