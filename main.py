@@ -272,7 +272,7 @@ def getAllMessagesByChatGroup():
 def getAllMessagesByHashtag():
     if request.method == 'GET':
         handler = MessageHandler()
-        return handler.getAllMessagesByHashtag(request.args)
+        return handler.getAllMessagesByHashtaginGC(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 

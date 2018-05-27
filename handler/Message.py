@@ -149,10 +149,11 @@ class MessageHandler:
                 mapped_result.append(self.mapToDictWithLikesAndDislikes(r))
             return jsonify(Messages=mapped_result)
 
-    def getAllMessagesByHashtag(self, form):
-        HID = form['HID']
+    def getAllMessagesByHashtaginGC(self, form):
+        Htext = form['Htext'].replace('~', '#')
+        GID = form['GID']
         dao = MessageDAO()
-        result = dao.getAllMessagesByHashtag(HID)
+        result = dao.getAllMessagesByHashtaginGC(Htext, GID)
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:

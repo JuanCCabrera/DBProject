@@ -103,12 +103,12 @@ class MessageDAO:
             result.append(row)
         return result
 
-    def getAllMessagesByHashtag(self, HID):
+    def getAllMessagesByHashtaginGC(self, htext, gid):
         cursor = self.conn.cursor()
         query = "Select mid, message, mdate, uid, htid, htext " \
-                "from messages natural inner join hashashtags natural inner join hashtags " \
-                "where htid = %s;"
-        cursor.execute(query, (HID, ))
+                "from messages natural inner join hashtags " \
+                "where htext = %s and gid = %s;"
+        cursor.execute(query, (htext, gid, ))
         result = []
         for row in cursor:
             result.append(row)
