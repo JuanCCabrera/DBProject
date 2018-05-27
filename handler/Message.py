@@ -159,7 +159,7 @@ class MessageHandler:
         else:
             mapped_result = []
             for r in result:
-                mapped_result.append(self.messagebyhashtag_dict(r))
+                mapped_result.append(self.mapToDictWithLikesAndDislikes(r))
             return jsonify(Messages=mapped_result)
 
     def contains_hashtags(self, message):

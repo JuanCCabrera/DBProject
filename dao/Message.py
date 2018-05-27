@@ -105,8 +105,8 @@ class MessageDAO:
 
     def getAllMessagesByHashtaginGC(self, htext, gid):
         cursor = self.conn.cursor()
-        query = "Select mid, message, mdate, uid, htid, htext " \
-                "from messages natural inner join hashtags " \
+        query = "Select mid, message, udispname, mdate " \
+                "from messages natural inner join  hashtags hatural inner join users using (uid) " \
                 "where htext = %s and gid = %s;"
         cursor.execute(query, (htext, gid, ))
         result = []
