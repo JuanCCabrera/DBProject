@@ -36,6 +36,12 @@ class GroupChatHandler:
         result['UID'] = UID
         return result
 
+    def insert_Participant_dict(self, GID, UID):
+        result = {}
+        result['GID'] = GID
+        result['UID'] = UID
+        return result
+
     def getAllGroupChats(self):
         dao = GroupChatDAO()
         result = dao.getAllGroupChats()
@@ -123,5 +129,21 @@ class GroupChatHandler:
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
 
+    def insertParticipant(self, form):
+        dao = GroupChatDAO()
+        if len(form) != 2:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            GID = form['GID']
+            UID = form['UID']
+            if GID and UID :
+                row = dao.insertParticipant(GID, UID)
+                if row == None:
+                    return jsonify(Error="Invalid Insert"), 404
+                else:
+                    result = self.insert_NewChatGroup_dict(GID, UID)
+                    return jsonify(User=result)
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400
 
 

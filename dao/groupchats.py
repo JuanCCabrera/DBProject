@@ -77,6 +77,14 @@ class GroupChatDAO:
         self.conn.commit()
         return result
 
-
+    def insertParticipant(self, GID, UID):
+        cursor = self.conn.cursor()
+        query = "insert into participates (gid, uid) " \
+                "values (%s,%s) " \
+                "returning gid; "
+        cursor.execute(query, (GID, UID, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result
 
 

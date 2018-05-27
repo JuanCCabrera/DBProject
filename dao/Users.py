@@ -147,3 +147,24 @@ class UsersDAO:
         cursor.execute(query, (UDispName, ))
         result = cursor.fetchone()
         return result
+
+    def validateUser(self, UFirst_name, ULast_name, UPhone, UEmail):
+        cursor = self.conn.cursor()
+        query = "select uid " \
+                "from users " \
+                "where ufirst_name = %s and ulast_name = %s " \
+                " and (UPhone = %s or uemail = %s); "  # verificar si corre bien
+        cursor.execute(query, (UFirst_name, ULast_name, UPhone, UEmail, ))
+        result = cursor.fetchone()
+        return result
+
+    def insertContact(self, UID, CUID):
+        print('CUID: ', CUID)
+        cursor = self.conn.cursor()
+        query = "insert into contacts (uid, cuid) " \
+                "values (%s,%s) " \
+                "returning uid; "
+        cursor.execute(query, (UID, CUID, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result

@@ -204,3 +204,25 @@ class UsersHandler:
                     return jsonify(User=result)
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def insertContact(self, form):
+        dao = UsersDAO()
+        if len(form) != 5:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            UID = form['UID'] #ID de la persona que quiere añadir el contacto
+            UFirst_name = form['UFirst_name']
+            ULast_name = form['ULast_name']
+            UPhone = form['UPhone']
+            UEmail = form['UEmail']
+            if UFirst_name and ULast_name and (UPhone or UEmail):
+                validate = dao.validateUser(UFirst_name, ULast_name, UPhone, UEmail)
+                if validate == None:
+                    return jsonify(Error="User Do't Exist"), 404
+                row = dao.insertContact(UID, validate[0])
+                if row == None:
+                    return jsonify(Error="Query Fail"), 404
+                else:
+                    return jsonify(User="Sucess")
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400

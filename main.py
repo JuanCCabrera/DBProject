@@ -279,10 +279,27 @@ def getAllMessagesByHashtag():
 #The ability to post a reply to a message
 @app.route('/SikitrakeChat/GroupChat/Messages/Reply', methods = ['POST'])
 def insertReplyMessage():
-    print ('Estoy en el get')
     if request.method == 'POST':
         handler = MessageHandler()
         return handler.insertReplyMessage(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#The add a participant to a group chat
+@app.route('/SikitrakeChat/GroupChat/Participants', methods = ['POST'])
+def insertParticipant():
+    if request.method == 'POST':
+        handler = GroupChatHandler()
+        return handler.insertParticipant(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Add User to your contact list based on first name, last name and either phone or number
+@app.route('/SikitrakeChat/AddContact', methods = ['POST'])
+def insertContact():
+    if request.method == 'POST':
+        handler = UsersHandler()
+        return handler.insertContact(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 
