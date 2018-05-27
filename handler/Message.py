@@ -125,6 +125,7 @@ class MessageHandler:
             if len(Hashtags) !=0:
                 MHashtag = True
             if Message and MDate and UID and GID :
+                Message = Message.replace('~', '#')
                 row = dao.insertMessageinChatGroup(Message, MDate, MHashtag, int(UID), int(GID))
                 if row == None:
                     return jsonify(Error="Invalid Insert"), 404
@@ -161,7 +162,9 @@ class MessageHandler:
             return jsonify(Messages=mapped_result)
 
     def contains_hashtags(self, message):
-        string = message.split(' ')
+        m = message.replace('~', '#')
+        print ('Mesage with # : ', m)
+        string = m.split(' ')
         Hashtags = []
         for word in string:
             if word.startswith('#'):
