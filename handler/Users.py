@@ -223,6 +223,6 @@ class UsersHandler:
                 if row == None:
                     return jsonify(Error="Query Fail"), 404
                 else:
-                    return jsonify(User="Sucess")
+                    return jsonify(User="Success")
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400

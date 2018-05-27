@@ -141,8 +141,8 @@ class GroupChatHandler:
                 if row == None:
                     return jsonify(Error="Invalid Insert"), 404
                 else:
-                    result = self.insert_NewChatGroup_dict(GID, UID)
-                    return jsonify(User=result)
+                    #result = self.insert_NewChatGroup_dict(GID, UID)
+                    return jsonify(User="Success")
             else:
                 return jsonify(Error="Unexpected attributes in insert request"), 400
 
