@@ -36,6 +36,16 @@ class ReactionHandler:
         result['Dislikes'] = row[2]
         return result
 
+    def ReactioninMessage_dict(self, MReaction, UID, MID):
+        result = {}
+        result['MID'] = MID
+        result['UID'] = UID
+        if MReaction == True:
+            result['MReaction'] = "Liked"
+        else:
+            result['MReaction'] = "Disliked"
+        return result
+
     def getAllReactions(self):
         dao = ReactionDAO()
         result = dao.getAllReactions()
@@ -134,3 +144,84 @@ class ReactionHandler:
             for r in result:
                 mapped_result.append(self.mapToDictNumberOfLikesOrDislikes(r))
             return jsonify(Reactions=mapped_result)
+
+    #Phase III
+    def insertLikeinMessage(self, form):
+        dao = ReactionDAO()
+        if len(form) != 2:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            UID = form['UID']
+            MID = form['MID']
+            validate = dao.validateReaction(UID, MID)
+            if validate == None:
+                MReaction = True
+                if UID and MID :
+                    row = dao.insertReactioninMessage(MReaction, UID, MID)
+                    if row == None:
+                        return jsonify(Error="Invalid Insert"), 404
+                    else:
+                        result = self.ReactioninMessage_dict(MReaction, UID, MID)
+                        return jsonify(Like=result)
+                else:
+                    return jsonify(Error="Unexpected attributes in insert request"), 400
+            else:
+                return self.updateLikeinMessage(form)
+
+    def updateLikeinMessage(self, form):
+        dao = ReactionDAO()
+        if len(form) != 2:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            MReaction = True
+            UID = form['UID']
+            MID = form['MID']
+            if UID and MID :
+                row = dao.updateReactioninMessage(MReaction, UID, MID)
+                if row == None:
+                    return jsonify(Error="Invalid Update"), 404
+                else:
+                    result = self.ReactioninMessage_dict(MReaction, UID, MID)
+                    return jsonify(Like=result)
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def insertDislikeinMessage(self, form):
+        dao = ReactionDAO()
+        if len(form) != 2:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            UID = form['UID']
+            MID = form['MID']
+            validate = dao.validateReaction(UID, MID)
+            if validate == None:
+                MReaction = False
+                if UID and MID :
+                    row = dao.insertReactioninMessage(MReaction, UID, MID)
+                    if row == None:
+                        return jsonify(Error="Invalid Insert"), 404
+                    else:
+                        result = self.ReactioninMessage_dict(MReaction, UID, MID)
+                        return jsonify(Dislike=result)
+                else:
+                    return jsonify(Error="Unexpected attributes in insert request"), 400
+            else:
+                return self.updateDislikeinMessage(form)
+
+    def updateDislikeinMessage(self, form):
+        dao = ReactionDAO()
+        if len(form) != 2:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            MReaction = False
+            UID = form['UID']
+            MID = form['MID']
+            if UID and MID :
+                row = dao.updateReactioninMessage(MReaction, UID, MID)
+                if row == None:
+                    return jsonify(Error="Invalid Update"), 404
+                else:
+                    result = self.ReactioninMessage_dict(MReaction, UID, MID)
+                    return jsonify(Dislike=result)
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400

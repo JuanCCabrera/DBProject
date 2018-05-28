@@ -36,6 +36,15 @@ class GroupChatDAO:
             result.append(row)
         return result
 
+    def getGroupChatsByUsername(self,name):
+        cursor = self.conn.cursor()
+        query = "Select GID, GName, GCDate, G.UID from (groupchats as G inner join participates as P using(gid)), Users as U where P.uid = U.uid AND UDispName = %s;"  # verificar si corre bien
+        cursor.execute(query,(name,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getGroupChatNameById(self,gid):
         cursor = self.conn.cursor()
         query = "Select gname from groupchats where gid = %s;"  # verificar si corre bien
@@ -54,13 +63,46 @@ class GroupChatDAO:
             result.append(row)
         return result
 
-    def getGroupChatByOwner(self,uid):
+
+    # Phase III
+    def getGroupChatByUserID(self,uid):
         cursor = self.conn.cursor()
-        query = "Select gid, gname, gcdate From groupchats where uid = %s;"  # verificar si corre bien
+        query = "select p.uid, p.gid, g.gname " \
+                "from participates as p, groupchats as g " \
+                "where p.gid = g.gid and p.uid = %s; "
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
             result.append(row)
+        return result
+
+    def insertNewChatGroup(self, GName, GCDate, UID):
+        cursor = self.conn.cursor()
+        query = "insert into groupchats (gname, gcdate, uid) " \
+                "values (%s,%s,%s) " \
+                "returning gid; "
+        cursor.execute(query, (GName, GCDate, UID, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result
+
+    def insertParticipant(self, GID, UID):
+        cursor = self.conn.cursor()
+        query = "insert into participates (gid, uid) " \
+                "values (%s,%s) " \
+                "returning gid; "
+        cursor.execute(query, (GID, UID, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result
+
+    def validateContact(self, UID, CUID):
+        cursor = self.conn.cursor()
+        query = "select uid " \
+                "from contacts " \
+                "where uid = %s and cuid = %s; "
+        cursor.execute(query, (UID, CUID, ))
+        result = cursor.fetchone()
         return result
 
 

@@ -15,9 +15,9 @@ def home():
     return ('Welcome to SikitrakeChat!')
 
 
-@app.route('/login')
+"""@app.route('/login')
 def login():
-    return "Login Not Currently Available"
+    return "Login Not Currently Available" """
 
 @app.route('/SikitrakeChat/Reactions')
 def reactions():
@@ -32,6 +32,11 @@ def getReactionsById(rid):
 def getAllLikes():
     return ReactionHandler().getAllLikes()
 
+@app.route('/SikitrakeChat/GroupChats/User/name/<string:name>')
+def getGroupChatsByUsername(name):
+    handler = GroupChatHandler()
+    return handler.getGroupChatsByUsername(name)
+
 @app.route('/SikitrakeChat/Reactions/Dislikes')
 def getAllDislikes():
     return ReactionHandler().getAllDislikes()
@@ -44,9 +49,9 @@ def getAllGroupChats():
 def getGroupChatsByName(name):
     return GroupChatHandler().getGroupChatsByName(name)
 
-@app.route('/SikitrakeChat/GroupChats/owner/<int:uid>')
+""""@app.route('/SikitrakeChat/GroupChats/owner/<int:uid>')
 def getGroupChatByOwner(uid):
-    return GroupChatHandler().getGroupChatByOwner(uid)
+    return GroupChatHandler().getGroupChatByOwner(uid)"""
 
 @app.route('/SikitrakeChat/GroupChats/ID/<int:gid>')
 def getGroupChatsById(gid):
@@ -183,6 +188,125 @@ def getMessagesWithLikesAndDislikes():
     handler = MessageHandler()
     return handler.getMessagesWithLikesAndDislikes()
 
+
+############################
+#Phase III Routes
+############################
+
+#The ability to login a user
+@app.route('/SikitrakeChat/Login', methods = ['GET'])
+def Login():
+    if request.method == 'GET':
+        print ('estoy en la ruta')
+        handler = UsersHandler()
+        return handler.login(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#The ability to logout a user (no esta en los requerimientos)
+# Creo que no se necesita hacer logout como tal
+# bastaria con enviar al usuario a la pg de login y ya
+"""@app.route('/SikitrakeChat/Logout')
+def Logout():
+    handler = UsersHandler()
+    return handler.logout(request.args)"""
+
+#The ability to add a new user
+@app.route('/SikitrakeChat/AddUser', methods = ['POST'])
+def insertUser():
+    if request.method == 'POST':
+        handler = UsersHandler()
+        return handler.insertUser(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#The ability to post a new message
+@app.route('/SikitrakeChat/GroupChat/Message', methods = ['POST'])
+def insertMessageinChatGroup():
+    if request.method == 'POST':
+        handler = MessageHandler()
+        return handler.insertMessageinChatGroup(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+#The ability to like a message
+@app.route('/SikitrakeChat/GroupChat/Messages/Like', methods = ['POST'])
+def manageLikeMessage():
+    # tengo que hacer la rutina para vetificar si alguien no le dio
+    # like o dislike, se alguien le dio like/dislike seria un update
+    if request.method == 'POST':
+        handler = ReactionHandler()
+        return handler.insertLikeinMessage(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#The ability to dislike a message
+@app.route('/SikitrakeChat/GroupChat/Messages/Dislike', methods = ['POST'])
+def manageDislikeMessage():
+    if request.method == 'POST':
+        handler = ReactionHandler()
+        return handler.insertDislikeinMessage(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#List of chat groups to which a user belongs
+#The ability to join a chat group
+@app.route('/SikitrakeChat/GroupChats', methods = ['GET', 'POST'])
+def getAllChatGroupsByUser():
+    if request.method == 'GET':
+        handler = GroupChatHandler()
+        return handler.getGroupChatByUserID(request.args)
+    if request.method == 'POST' :
+        handler = GroupChatHandler()
+        return handler.insertNewChatGroup(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#List of messages in a given chat group
+@app.route('/SikitrakeChat/Messages/GroupChats', methods = ['GET'])
+def getAllMessagesByChatGroup():
+    if request.method == 'GET':
+        handler = MessageHandler()
+        return handler.getMessagesWithLikesAndDislikesByChatGroup(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#List of messages with a given hashtag on a chat group
+@app.route('/SikitrakeChat/GroupChat/Hashtag/Messages', methods = ['GET'])
+def getAllMessagesByHashtag():
+    if request.method == 'GET':
+        handler = MessageHandler()
+        return handler.getAllMessagesByHashtaginGC(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#The ability to post a reply to a message
+@app.route('/SikitrakeChat/GroupChat/Messages/Reply', methods = ['POST'])
+def insertReplyMessage():
+    if request.method == 'POST':
+        handler = MessageHandler()
+        return handler.insertReplyMessage(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#The add a participant to a group chat
+@app.route('/SikitrakeChat/GroupChat/Participants', methods = ['POST'])
+def insertParticipant():
+    if request.method == 'POST':
+        handler = GroupChatHandler()
+        return handler.insertParticipant(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Add User to your contact list based on first name, last name and either phone or number
+@app.route('/SikitrakeChat/AddContact', methods = ['POST'])
+def insertContact():
+    if request.method == 'POST':
+        handler = UsersHandler()
+        return handler.insertContact(request.args)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 if __name__=='__main__':
     app.run()

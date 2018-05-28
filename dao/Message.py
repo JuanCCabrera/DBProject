@@ -77,3 +77,48 @@ class MessageDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    #Phase III
+    def insertMessageinChatGroup(self, Message, MDate, MHashtag, UID, GID):
+        cursor = self.conn.cursor()
+        print ('Estoy en el insert')
+        query = "insert into messages (message, mdate, mhashtag, uid, gid) " \
+                "values (%s,%s,%s,%s,%s) " \
+                "returning mid; "
+        cursor.execute(query, (Message, MDate, MHashtag, int(UID), int(GID), ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        print ('Result : ', result)
+        return result
+
+    def getMessagesWithLikesAndDislikesByChatGroup(self, GID):
+        cursor = self.conn.cursor()
+        query = "Select mid, message, udispname, mdate " \
+                "from Messages inner join Users using(uid) " \
+                "where gid = %s " \
+                "order by mid desc; "
+        cursor.execute(query, (GID, ))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllMessagesByHashtaginGC(self, htext, gid):
+        cursor = self.conn.cursor()
+        query = "Select mid, message, udispname, mdate " \
+                "from messages natural inner join  hashtags hatural inner join users using (uid) " \
+                "where htext = %s and gid = %s;"
+        cursor.execute(query, (htext, gid, ))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def insertReplyMessage(self, Or_msg_ID, r_msg_id):
+        cursor = self.conn.cursor()
+        print ('Estoy en el insert')
+        query = "insert into isreply (or_msg_id, r_msg_id) " \
+                "values (%s,%s); "
+        cursor.execute(query, (Or_msg_ID, r_msg_id, ))
+        self.conn.commit()
+        return

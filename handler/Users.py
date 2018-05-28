@@ -28,6 +28,17 @@ class UsersHandler:
         result['UDispName'] = row[1]
         return result
 
+    def insert_user_dict(self, UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail, uid):
+        result = {}
+        result['UDispName'] = UDispName
+        result['UPassword'] = UPassword
+        result['UFirst_name'] = UFirst_name
+        result['ULast_name'] = ULast_name
+        result['UPhone'] = UPhone
+        result['UEmail'] = UEmail
+        result['UID'] = uid
+        return result
+
 
     def getAllUsers(self):
         dao = UsersDAO()
@@ -157,3 +168,61 @@ class UsersHandler:
             for r in result:
                 mapped_result.append(self.mapToDict(r))
             return jsonify(Users=mapped_result)
+
+    # Phase III #
+    def login(self, form):
+        dao = UsersDAO()
+        UDispName = form['UDispName']
+        UPassword = form['UPassword']
+        result = dao.login(UDispName, UPassword)
+        if result == None:
+            return jsonify(Error="Invalid Login"), 404
+        else:
+            return jsonify(Login=1)
+
+    def insertUser(self, form):
+        dao = UsersDAO()
+        if len(form) != 6:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            UDispName = form['UDispName']
+            UPassword = form['UPassword']
+            UFirst_name = form['UFirst_name']
+            ULast_name = form['ULast_name']
+            UPhone = form['UPhone']
+            UEmail = form['UEmail']
+            if UDispName and UPassword and UFirst_name and UFirst_name \
+                and ULast_name and UPhone and UEmail:
+                validate = dao.validateUDispName(UDispName)
+                if validate != None:
+                    return jsonify(Error="User Exist"), 404
+                row = dao.insertUser(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail)
+                if row == None:
+                    return jsonify(Error="Query Fail"), 404
+                else:
+                    result = self.insert_user_dict(UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail, row)
+                    return jsonify(User=result)
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400
+
+    def insertContact(self, form):
+        dao = UsersDAO()
+        if len(form) != 5:
+            return jsonify(Error="Malformed insert request"), 400
+        else:
+            UID = form['UID'] #ID de la persona que quiere añadir el contacto
+            UFirst_name = form['UFirst_name']
+            ULast_name = form['ULast_name']
+            UPhone = form['UPhone']
+            UEmail = form['UEmail']
+            if UFirst_name and ULast_name and (UPhone or UEmail):
+                validate = dao.validateUser(UFirst_name, ULast_name, UPhone, UEmail)
+                if validate == None:
+                    return jsonify(Error="User Do't Exist"), 404
+                row = dao.insertContact(UID, validate[0])
+                if row == None:
+                    return jsonify(Error="Query Fail"), 404
+                else:
+                    return jsonify(User="Success")
+            else:
+                return jsonify(Error="Unexpected attributes in insert request"), 400
