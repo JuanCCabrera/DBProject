@@ -118,3 +118,53 @@ class UsersDAO:
             result.append(row)
         return result
 
+    # Phase III #
+    def login(self, UDispName, UPassword):
+        cursor = self.conn.cursor()
+        query = "select udispname, upassword " \
+                "from users " \
+                "where udispname = %s and upassword = %s; "  # verificar si corre bien
+        cursor.execute(query, (UDispName, UPassword, ))
+        result = cursor.fetchone()
+        return result
+
+    def insertUser(self, UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail):
+        cursor = self.conn.cursor()
+        query = "insert into users (udispname, upassword, ufirst_name, ulast_name, " \
+                "uphone, uemail) " \
+                "values (%s,%s,%s,%s,%s,%s) " \
+                "returning uid; "
+        cursor.execute(query, (UDispName, UPassword, UFirst_name, ULast_name, UPhone, UEmail, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result
+
+    def validateUDispName(self, UDispName):
+        cursor = self.conn.cursor()
+        query = "select udispname " \
+                "from users " \
+                "where udispname = %s; "  # verificar si corre bien
+        cursor.execute(query, (UDispName, ))
+        result = cursor.fetchone()
+        return result
+
+    def validateUser(self, UFirst_name, ULast_name, UPhone, UEmail):
+        cursor = self.conn.cursor()
+        query = "select uid " \
+                "from users " \
+                "where ufirst_name = %s and ulast_name = %s " \
+                " and (UPhone = %s or uemail = %s); "  # verificar si corre bien
+        cursor.execute(query, (UFirst_name, ULast_name, UPhone, UEmail, ))
+        result = cursor.fetchone()
+        return result
+
+    def insertContact(self, UID, CUID):
+        print('CUID: ', CUID)
+        cursor = self.conn.cursor()
+        query = "insert into contacts (uid, cuid) " \
+                "values (%s,%s) " \
+                "returning uid; "
+        cursor.execute(query, (UID, CUID, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result

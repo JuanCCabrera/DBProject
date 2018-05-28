@@ -44,3 +44,14 @@ class HashtagDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    # Phase III
+    def insertHashtag(self, htext, mid):
+        cursor = self.conn.cursor()
+        query = "insert into hashtags (htext, mid) " \
+                "values (%s,%s) " \
+                "returning htid; "
+        cursor.execute(query, (htext, mid, ))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
+        return result
