@@ -124,6 +124,9 @@ class GroupChatHandler:
                 if row == None:
                     return jsonify(Error="Invalid Insert"), 404
                 else:
+                    GID = row
+                    print ('GID : ', GID)
+                    dao.insertParticipant(GID, UID)
                     result = self.insert_NewChatGroup_dict(GName, GCDate, UID)
                     return jsonify(User=result)
             else:
